@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NU Bulldogs MLBB Varsity Tryouts</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5fb;--card:#fff;--ink:#0b1b3a;--mut:#5b6784;--line:#dbe2f0;--field:#f6f8fd;--blue:#003A70;--blue2:#0b5cad;--gold:#FFC72C;--goldink:#6b4e00;--goldbg:#fff6d9;--ok:#0d8a5e;--bad:#c93a4b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#00142b;--card:#032247;--ink:#eaf0fb;--mut:#9db0d2;--line:#12427f;--field:#021a36;--blue2:#5aa2ee;--goldink:#FFC72C;--goldbg:#2a2a10;--ok:#3ddc9a;--bad:#ff7d8c}}
+:root[data-theme="dark"]{--bg:#00142b;--card:#032247;--ink:#eaf0fb;--mut:#9db0d2;--line:#12427f;--field:#021a36;--blue2:#5aa2ee;--goldink:#FFC72C;--goldbg:#2a2a10;--ok:#3ddc9a;--bad:#ff7d8c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,sans-serif}
+h1,h2,h3,.disp{font-family:'Barlow Condensed','Arial Narrow',sans-serif;letter-spacing:.03em;text-transform:uppercase}
+header{background:linear-gradient(135deg,#002650,#003A70 60%,#0b5cad);border-bottom:5px solid var(--gold);color:#fff}
+.wrap{max-width:1280px;margin:0 auto;padding:16px}
+.hd{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.logo{width:46px;height:46px;border-radius:12px;background:var(--gold);color:#003A70;display:grid;place-items:center;font:800 24px 'Barlow Condensed',sans-serif}
+header h1{margin:0;font-size:28px;line-height:1;color:var(--gold)}
+header p{margin:2px 0 0;color:#c4d4ee;font-size:12px}
+.btn{cursor:pointer;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font:600 12px Inter,sans-serif;padding:8px 12px;border-radius:10px}
+.btn:hover{background:rgba(255,255,255,.2)}
+.btn.danger:hover{background:var(--bad);border-color:var(--bad)}
+.btn2{cursor:pointer;border:1px solid var(--blue2);background:transparent;color:var(--blue2);font:600 12px Inter,sans-serif;padding:7px 12px;border-radius:9px}.btn2:hover{background:var(--blue2);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:12px 14px}
+.stat b{display:block;font:700 26px 'Barlow Condensed',sans-serif;color:var(--blue2);line-height:1.1}
+.stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:1024px){.grid{grid-template-columns:5fr 7fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 20px rgba(0,38,80,.07)}
+.card>.t{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.card>.t h2{margin:0;font-size:20px;color:var(--blue2)}
+.pad{padding:16px}
+.mut{color:var(--mut);font-size:12px}
+label{display:block;font-size:11px;font-weight:600;color:var(--mut);margin-bottom:3px}
+input,select{width:100%;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font:inherit}
+input:focus,select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.g{display:grid;gap:8px}.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(2,1fr)}
+.sec{margin-top:14px}
+.sec h3{margin:0 0 6px;font-size:15px;color:var(--goldink);display:flex;gap:6px;align-items:center}
+.sec h3:after{content:"";flex:1;height:2px;background:var(--gold);opacity:.5}
+.who{background:var(--field);border:1px solid var(--line);border-radius:12px;padding:10px}
+.go{width:100%;margin-top:16px;cursor:pointer;border:0;border-radius:12px;padding:12px;background:var(--gold);color:#003A70;font:800 18px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 4px 0 #c99200}
+.go:active{transform:translateY(2px);box-shadow:0 2px 0 #c99200}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.filters select{width:auto}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:760px}
+th{background:var(--blue);color:#fff;text-align:left;padding:10px;font:700 12px 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr.top td{background:var(--goldbg)}tr.top td:first-child{box-shadow:inset 5px 0 var(--gold)}
+tbody tr:hover td{background:rgba(11,92,173,.07)}
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;background:var(--field);border:1px solid var(--line);font-size:11px;white-space:nowrap}
+.badge{background:var(--gold);color:#003A70;font:800 11px 'Barlow Condensed',sans-serif;letter-spacing:.06em;padding:1px 6px;border-radius:5px;text-transform:uppercase;margin-left:6px;white-space:nowrap}
+.link{background:none;border:0;padding:0;color:var(--ink);font:700 13px Inter,sans-serif;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:4px}
+.link:hover{color:var(--blue2)}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:4px;min-width:70px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue2),var(--gold))}
+.rank{font:800 18px 'Barlow Condensed',sans-serif;color:var(--mut)}
+.del{cursor:pointer;background:none;border:1px solid var(--bad);color:var(--bad);border-radius:7px;padding:3px 8px;font-size:11px}.del:hover{background:var(--bad);color:#fff}
+.legend{margin-top:12px;font-size:12px;color:var(--mut);padding:10px 14px;border-left:4px solid var(--gold);background:var(--card);border-radius:8px}
+#modal{position:fixed;inset:0;background:rgba(0,20,45,.7);backdrop-filter:blur(3px);z-index:50;display:none;align-items:center;justify-content:center;padding:16px}
+#modal.on{display:flex}
+.mb{background:var(--card);border-radius:18px;max-width:760px;width:100%;max-height:90vh;overflow-y:auto;border:1px solid var(--line);border-top:6px solid var(--gold)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 16px}
+.tab{cursor:pointer;background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px;font:700 15px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.tab.on{color:var(--blue2);border-color:var(--gold)}
+.kv{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.kv span{display:block;font-size:10.5px;color:var(--mut)}.kv b{font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.big{text-align:center}.big b{font:800 28px 'Barlow Condensed',sans-serif;color:var(--blue2)}
+.big.o{background:var(--goldbg);border-color:var(--gold)}.big.o b{color:var(--goldink)}
+.match{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--field)}
+.empty{padding:28px;text-align:center;color:var(--mut)}
+@media(min-width:640px){.c4{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="wrap hd">
+  <div style="display:flex;gap:12px;align-items:center"><div class="logo">NU</div>
+    <div><h1>NU Bulldogs · MLBB Varsity Tryouts</h1><p>Multi-game averages, match history and team filters</p></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <input type="file" id="imp" accept=".json" hidden>
+    <button class="btn" id="bImp">📤 Import JSON</button>
+    <button class="btn" id="bExp">📥 Export JSON</button>
+    <button class="btn danger" id="bClr">🗑️ Reset All</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <div class="stats" id="stats"></div>
+  <div class="grid">
+    <section class="card" style="height:fit-content">
+      <div class="t"><h2>📝 Add Match Performance</h2><span class="pill">Official MLBB metrics</span></div>
+      <form id="form" class="pad">
+        <p class="mut" style="margin:0 0 10px">Entering a match for an existing player and team adds it to their history and updates their averages.</p>
+        <div class="who g c2">
+          <div><label>Team Name</label><input id="teamName" required list="teamList" autocomplete="off" placeholder="Pick or type a team"><datalist id="teamList"></datalist></div>
+          <div><label>Player IGN / Name</label><input id="name" required list="nameList" autocomplete="off" placeholder="Pick or type a player"><datalist id="nameList"></datalist></div>
+          <div><label>Primary Role</label><select id="role">
+            <option>Roamer</option><option>Jungler</option><option>Mid Laner</option><option>Gold Laner</option><option>EXP Laner</option></select></div>
+          <div><label>Academic Status</label><select id="academic"><option>Eligible</option><option>Probationary</option></select></div>
+          <div style="grid-column:1/-1"><label>Match / Game ID (optional)</label><input id="matchNo" placeholder="e.g. Game 1 - use the same ID for every player in that game"></div>
+          <div id="exHint" class="mut" hidden style="grid-column:1/-1;color:var(--goldink);font-weight:600"></div>
+        </div>
+        <div id="fields"></div>
+        <div id="editBar" hidden style="margin-top:12px;padding:10px;border-radius:10px;background:var(--goldbg);border:1px solid var(--gold)"><b id="editMsg"></b><label style="margin:8px 0 0;display:flex;gap:6px;align-items:center;font-weight:500"><input type="checkbox" id="applyAll" style="width:auto"> Apply these coach ratings to all of this player's matches</label><button type="button" class="del" id="cancelEdit" style="margin-top:8px">Cancel edit</button></div>
+        <button class="go" id="goBtn" type="submit">➕ Save Match Performance</button>
+      </form>
+    </section>
+
+    <section>
+      <div class="card">
+        <div class="t">
+          <div><h2>🏆 Tryout Leaderboard</h2><div class="mut">Click a name for full averages and match history.</div></div>
+          <div class="filters">
+            <select id="teamFilter"><option value="ALL">All Teams</option></select>
+            <select id="matchFilter"><option value="ALL">All Matches</option></select>
+            <select id="roleFilter"><option value="ALL">All Roles</option><option>Roamer</option><option>Jungler</option><option>Mid Laner</option><option>Gold Laner</option><option>EXP Laner</option></select>
+          </div>
+        </div>
+        <div class="tw"><table>
+          <thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>GP</th><th>Avg K/D/A</th><th>Quant</th><th>Qual</th><th>Overall</th><th></th></tr></thead>
+          <tbody id="lb"></tbody>
+        </table></div>
+      </div>
+      <div class="card" id="matchCard" hidden style="margin-top:16px"><div class="t"><h2 id="matchTitle"></h2><span class="mut" id="matchMeta"></span></div><div class="tw"><table><thead><tr><th>Player</th><th>Team</th><th>Role</th><th>K/D/A</th><th>Hero Dmg</th><th>Turret</th><th>Taken</th><th>Gold</th><th>TF %</th><th>Time</th><th>Comms</th><th>Resil.</th><th>Pool</th><th>Overall</th></tr></thead><tbody id="matchBody"></tbody></table></div></div>
+      <div class="legend"><b>Scoring:</b> Overall Index = 60% quantitative match performance (K/D/A, teamfight %, damage, gold, weighted by role) + 40% coach evaluation. Gold rows mark the <b>top candidate in each role</b>. An asterisk (*) means the score is provisional (match stats only) until coach ratings are added.</div>
+    </section>
+  </div>
+</main>
+
+<div id="modal"><div class="mb">
+  <div class="pad" style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+    <div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h2 id="mName" style="margin:0;font-size:32px;color:var(--blue2)"></h2><span class="pill" id="mRole"></span></div>
+    <div class="mut">Team: <b id="mTeam"></b> · Matches: <b id="mGames"></b> · <span id="mAcad"></span></div></div>
+    <button class="btn" style="color:var(--ink);border-color:var(--line);background:var(--field)" id="mX">✕</button>
+  </div>
+  <div class="tabs"><button class="tab on" id="t1">📊 Averages</button><button class="tab" id="t2">🎮 Match History (<span id="mHc"></span>)</button></div>
+  <div class="pad" id="p1">
+    <div class="g c3"><div class="kv big"><span>Quantitative</span><b id="mQ"></b></div><div class="kv big"><span>Qualitative</span><b id="mL"></b></div><div class="kv big o"><span>Overall Index</span><b id="mO"></b></div></div>
+    <div id="mAvg"></div>
+  </div>
+  <div class="pad" id="p2" hidden></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+<script>
+const KEY='mlbb_varsity_tryout_v3';
+const num=(k,l,o={})=>({k,l,...o});
+const GROUPS=[
+ ['⚔️ Combat & Teamfight','c4',[num('kills','Kills',{d:1}),num('deaths','Deaths',{d:1}),num('assists','Assists',{d:1}),num('tfPart','Teamfight %',{d:1,sfx:'%',step:.1,max:100,ph:'68.5'}),num('matchTime','Match Time (min)',{d:1,sfx:' min',step:.1,min:1,ph:'14.5'})]],
+ ['💥 Damage & Gold','c2',[num('heroDmg','Hero Damage',{ph:'65000'}),num('turretDmg','Turret Damage',{ph:'8500'}),num('dmgTaken','Damage Taken',{ph:'95000'}),num('totalGold','Total Gold Earned',{ph:'11200'})]],
+ ['⭐ Coach Evaluation (1–10)','c3',[num('comms','Comms',{d:1,sfx:'/10',min:1,max:10,opt:1,ph:'optional'}),num('resilience','Resilience',{d:1,sfx:'/10',min:1,max:10,opt:1,ph:'optional'}),num('versatility','Hero Pool',{d:1,sfx:'/10',min:1,max:10,opt:1,ph:'optional'})]]
+];
+const KEYS=GROUPS.flatMap(g=>g[2].map(f=>f.k));
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let players=[];
+try{players=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){players=[]}
+
+$('fields').innerHTML=GROUPS.map(([t,c,fs])=>`<div class="sec"><h3 class="disp">${t}</h3><div class="g ${c==='c4'?'c2':c}">${fs.map(f=>`<div><label>${f.l}</label><input type="number" id="${f.k}" ${f.opt?'':'required'} min="${f.min??0}" ${f.max?`max="${f.max}"`:''} ${f.step?`step="${f.step}"`:''} placeholder="${f.ph||(f.min?'1-10':'0')}"></div>`).join('')}</div></div>`).join('');
+
+function score(p){
+  
+  const kda=(p.kills+p.assists)/(p.deaths===0?1:p.deaths);
+  const m=(v,t)=>Math.min(100,(v/t)*100);
+  let q=0;const rated=p.comms!=null&&p.resilience!=null&&p.versatility!=null;const qual=rated?((p.comms+p.resilience+p.versatility)/30)*100:0;
+  if(p.role==='Roamer'){q=m(p.tfPart,70)*.3+m(p.dmgTaken,90000)*.3+Math.max(0,100-p.deaths*15)*.25+m(kda,5)*.15}
+  else if(p.role==='Jungler'){q=m(p.totalGold,11000)*.25+m(p.tfPart,60)*.25+m(p.heroDmg,60000)*.25+m(kda,5)*.25}
+  else if(p.role==='Mid Laner'){q=m(p.heroDmg,65000)*.35+m(p.tfPart,65)*.25+m(p.totalGold,11000)*.15+m(kda,5)*.25}
+  else if(p.role==='Gold Laner'){q=m(p.heroDmg,75000)*.35+m(p.turretDmg,8000)*.25+m(p.totalGold,12000)*.25+m(kda,5)*.15}
+  else if(p.role==='EXP Laner'){q=m(p.dmgTaken,80000)*.3+m(p.turretDmg,6000)*.25+m(p.tfPart,55)*.2+m(p.heroDmg,45000)*.15+m(kda,5)*.1}
+  return{kda:kda.toFixed(1),quant:Math.round(q),qual:Math.round(qual),rated,overall:Math.round(rated?q*.6+qual*.4:q)};
+}
+function recalc(p){
+  const h=p.matchHistory;if(!h||!h.length)return;
+  KEYS.forEach(k=>{const v=h.map(m=>m[k]).filter(x=>x!=null&&!isNaN(x));p[k]=v.length?v.reduce((s,x)=>s+x,0)/v.length:null});
+  p.gamesPlayed=h.length;
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(players))}catch(e){}
+  const cur=$('teamFilter').value,teams=[...new Set(players.map(p=>p.teamName.trim()))].filter(Boolean);
+  $('teamFilter').innerHTML='<option value="ALL">All Teams</option>'+teams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  $('teamFilter').value=teams.includes(cur)?cur:'ALL';fillLists();fillMatches();
+  render();
+}
+$('form').onsubmit=e=>{
+  e.preventDefault();
+  const teamName=$('teamName').value.trim(),name=$('name').value.trim(),role=$('role').value,academic=$('academic').value;
+  const m={matchId:Date.now(),timestamp:new Date().toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})};
+  KEYS.forEach(k=>{const v=parseFloat($(k).value);m[k]=isNaN(v)?null:v});m.matchNo=$('matchNo').value.trim();
+  if(editing){
+    const p=players.find(x=>x.id===editing.pid);
+    if(p){
+      const old=p.matchHistory[editing.i];m.matchId=old.matchId;m.timestamp=old.timestamp;
+      p.matchHistory[editing.i]=m;
+      if($('applyAll').checked)p.matchHistory.forEach(x=>{x.comms=m.comms;x.resilience=m.resilience;x.versatility=m.versatility});
+      Object.assign(p,{teamName,name,role,academic});recalc(p);
+    }
+    stopEdit();save();return;
+  }
+  const ex=players.find(p=>p.name.toLowerCase()===name.toLowerCase()&&p.teamName.toLowerCase()===teamName.toLowerCase());
+  if(ex){(ex.matchHistory=ex.matchHistory||[]).push(m);ex.role=role;ex.academic=academic;recalc(ex)}
+  else players.push({id:Date.now(),teamName,name,role,academic,gamesPlayed:1,matchHistory:[m],...m});
+  save();
+  KEYS.forEach(k=>$(k).value='');$('name').value='';exHint();$('name').focus();
+};
+function del(id){if(confirm('Delete this player and all their matches?')){players=players.filter(p=>p.id!==id);save()}}
+$('bClr').onclick=()=>{if(confirm('Reset and clear all tryout data?')){players=[];save()}};
+
+function render(){
+  const rf=$('roleFilter').value,tf=$('teamFilter').value;const players=viewPlayers(),G=getAll();
+  const sc=new Map(players.map(p=>[p.id,score(p)]));
+  const tops={};
+  players.forEach(p=>{const s=sc.get(p.id).overall;if(!tops[p.role]||s>tops[p.role].s)tops[p.role]={id:p.id,s}});
+  const topIds=Object.values(tops).map(t=>t.id);
+  const list=players.filter(p=>(rf==='ALL'||p.role===rf)&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
+  const gset=new Set();G.forEach(p=>(p.matchHistory||[]).forEach((m,i)=>gset.add(m.matchNo?'L:'+m.matchNo.toLowerCase():'T:'+p.teamName.toLowerCase()+'#'+i)));const games=gset.size;
+  const tm=new Map();G.forEach(p=>(p.matchHistory||[]).forEach((m,i)=>{const k=mKey(p,m,i);if(m.matchTime&&!tm.has(k))tm.set(k,m.matchTime)}));
+  const tv=[...tm.values()],avgT=tv.length?tv.reduce((a,b)=>a+b,0)/tv.length:null;
+  const fmtT=t=>{const s=Math.round(t*60);return Math.floor(s/60)+'m '+String(s%60).padStart(2,'0')+'s'};
+  const gsc=new Map(G.map(p=>[p.id,score(p)]));const best=[...G].sort((a,b)=>gsc.get(b.id).overall-gsc.get(a.id).overall)[0];
+  $('stats').innerHTML=[[G.length,'Candidates'],[new Set(G.map(p=>p.teamName)).size,'Teams'],[games,'Matches Logged'],[avgT==null?'—':fmtT(avgT),'Avg Match Time'+(tv.length?' ('+tv.length+' timed)':'')],[best?esc(best.name)+' · '+gsc.get(best.id).overall:'—','Top Overall']].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+  $('lb').innerHTML=list.length?list.map((p,i)=>{
+    const s=sc.get(p.id),top=topIds.includes(p.id);
+    return `<tr class="${top?'top':''}"><td class="rank">${['🥇','🥈','🥉'][i]||i+1}</td>
+    <td><button class="link" data-id="${p.id}">${esc(p.name)}</button>${top?`<span class="badge">Top ${esc(p.role)}</span>`:''}</td>
+    <td><span class="pill">${esc(p.teamName)}</span></td><td>${esc(p.role)}</td><td><b>${p.gamesPlayed}</b></td>
+    <td class="mono">${p.kills.toFixed(1)}/${p.deaths.toFixed(1)}/${p.assists.toFixed(1)} <span class="mut">(${s.kda})</span></td>
+    
+    <td class="mono" style="color:var(--blue2)">${s.quant}</td><td class="mono">${s.rated?s.qual:'<span class="pill">Pending</span>'}</td>
+    <td style="min-width:90px"><b class="mono" style="color:var(--goldink);font-size:15px">${s.overall}${s.rated?'':'*'}</b><div class="bar"><i style="width:${s.overall}%"></i></div></td>
+    <td>${$('matchFilter').value==='ALL'?`<button class="del" data-del="${p.id}">Delete</button>`:''}</td></tr>`}).join('')
+   :'<tr><td colspan="10" class="empty">No candidates match the selected filters. Add a match to get started.</td></tr>';
+  matchDetail(list);
+}
+$('lb').onclick=e=>{
+  const o=e.target.closest('[data-id]'),d=e.target.closest('[data-del]');
+  if(o)openModal(+o.dataset.id);if(d)del(+d.dataset.del);
+};
+$('teamFilter').onchange=$('roleFilter').onchange=$('matchFilter').onchange=render;
+
+const fmt=(f,v)=>v==null||(f.k==='matchTime'&&!v)?'—':f.d?v.toFixed(f.d)+(f.sfx||''):Math.round(v).toLocaleString()+(f.sfx||'');
+function openModal(id){
+  const p=players.find(x=>x.id===id);if(!p)return;
+  const s=score(p);
+  curId=p.id;$('mName').textContent=p.name;$('mRole').textContent=p.role;$('mTeam').textContent=p.teamName;
+  $('mGames').textContent=p.gamesPlayed;$('mAcad').textContent=p.academic;
+  $('mHc').textContent=(p.matchHistory||[]).length;
+  $('mQ').textContent=s.quant+'/100';$('mL').textContent=s.rated?s.qual+'/100':'Pending';$('mO').textContent=s.overall+'/100'+(s.rated?'':' *');
+  $('mAvg').innerHTML=`<div class="sec"><h3 class="disp">KDA Ratio</h3><div class="kv"><b style="color:var(--ok)">${s.kda}</b></div></div>`+
+    GROUPS.map(([t,c,fs])=>`<div class="sec"><h3 class="disp">${t.replace('(1–10)','')} averages</h3><div class="g ${c}">${fs.map(f=>`<div class="kv"><span>${f.l}</span><b>${fmt(f,p[f.k])}</b></div>`).join('')}</div></div>`).join('');
+  const h=p.matchHistory||[];
+  $('p2').innerHTML=h.length?h.map((m,i)=>{
+    const k=((m.kills+m.assists)/(m.deaths||1)).toFixed(1);
+    return `<div class="match"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px"><span><span class="badge" style="margin:0">Game ${i+1}</span> <span class="mut">${esc(m.timestamp||'Recorded match')}${m.matchNo?' · '+esc(m.matchNo):''}</span></span><b class="mono">${m.kills}/${m.deaths}/${m.assists} <span style="color:var(--ok)">(${k} KDA)</span></b></div>
+    <div class="g c4 sec">${[['Hero Dmg',m.heroDmg],['Turret Dmg',m.turretDmg],['Dmg Taken',m.dmgTaken],['Total Gold',m.totalGold]].map(([l,v])=>`<div class="kv"><span>${l}</span><b>${Number(v).toLocaleString()}</b></div>`).join('')}</div>
+    <div class="mut" style="margin-top:8px">Match time <b>${m.matchTime?m.matchTime+' min':'—'}</b> · Teamfight participation <b>${m.tfPart}%</b> · Coach: Comms ${m.comms??'—'} · Resilience ${m.resilience??'—'} · Hero Pool ${m.versatility??'—'}</div>
+    <div style="margin-top:8px;display:flex;gap:6px"><button class="del" style="border-color:var(--blue2);color:var(--blue2)" data-edit="${p.id}|${i}">✏️ Edit</button><button class="del" data-delm="${p.id}|${i}">Delete match</button></div></div>`}).join('')
+    :'<div class="empty">No match records logged.</div>';
+  tab(1);$('modal').classList.add('on');
+}
+let editing=null;
+function stopEdit(){editing=null;$('form').reset();$('goBtn').textContent='➕ Save Match Performance';$('editBar').hidden=true}
+function startEdit(pid,i){
+  const p=players.find(x=>x.id===pid),m=p&&(p.matchHistory||[])[i];if(!m)return;
+  $('teamName').value=p.teamName;$('name').value=p.name;$('role').value=p.role;$('academic').value=p.academic||'Eligible';
+  KEYS.forEach(k=>$(k).value=m[k]==null?'':m[k]);$('matchNo').value=m.matchNo||'';
+  editing={pid,i};$('applyAll').checked=false;
+  $('goBtn').textContent='💾 Update Match';$('editMsg').textContent='Editing Game '+(i+1)+' of '+p.name;$('editBar').hidden=false;
+  close();$('form').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function delMatch(pid,i){
+  const p=players.find(x=>x.id===pid);if(!p||!confirm('Delete this match?'))return;
+  p.matchHistory.splice(i,1);
+  if(!p.matchHistory.length)players=players.filter(x=>x.id!==pid);else recalc(p);
+  if(editing)stopEdit();
+  save();close();if(players.some(x=>x.id===pid))openModal(pid);
+}
+$('p2').onclick=e=>{
+  const a=e.target.closest('[data-edit]'),d=e.target.closest('[data-delm]');
+  if(a){const[x,y]=a.dataset.edit.split('|');startEdit(+x,+y)}
+  if(d){const[x,y]=d.dataset.delm.split('|');delMatch(+x,+y)}
+};
+$('cancelEdit').onclick=stopEdit;
+function tab(n){$('p1').hidden=n!==1;$('p2').hidden=n!==2;$('t1').classList.toggle('on',n===1);$('t2').classList.toggle('on',n===2)}
+$('t1').onclick=()=>tab(1);$('t2').onclick=()=>tab(2);
+const close=()=>$('modal').classList.remove('on');
+$('mX').onclick=close;$('modal').onclick=e=>{if(e.target.id==='modal')close()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+
+async function saveFile(name,data){
+  try{const d=window.claude&&await claude.use('downloads');if(d){await d.save({filename:name,data});return}}
+  catch(e){if(e&&e.code==='declined')return}
+  const u=URL.createObjectURL(data instanceof Blob?data:new Blob([data]));
+  const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),2000);
+}
+$('bExp').onclick=()=>saveFile('MLBB_MultiGame_Tryouts.json',JSON.stringify(players,null,2));
+
+function fillLists(){
+  const t=$('teamName').value.trim().toLowerCase();
+  const teams=[...new Set(players.map(p=>p.teamName.trim()))].filter(Boolean);
+  const inTeam=players.filter(p=>!t||p.teamName.toLowerCase()===t);
+  const names=[...new Set((inTeam.length?inTeam:players).map(p=>p.name))];
+  $('teamList').innerHTML=teams.map(x=>`<option value="${esc(x)}">`).join('');
+  $('nameList').innerHTML=names.map(x=>`<option value="${esc(x)}">`).join('');
+}
+function exHint(){
+  const h=$('exHint');if(editing){h.hidden=true;return}
+  const t=$('teamName').value.trim().toLowerCase(),n=$('name').value.trim().toLowerCase();
+  const p=players.find(x=>x.name.toLowerCase()===n&&x.teamName.toLowerCase()===t);
+  h.hidden=!p;if(p)h.textContent='Existing player: this will be saved as Game '+((p.matchHistory||[]).length+1)+' for '+p.name+'.';
+}
+function autofill(){
+  if(editing)return;
+  const t=$('teamName').value.trim().toLowerCase(),n=$('name').value.trim().toLowerCase();
+  const p=players.find(x=>x.name.toLowerCase()===n&&(!t||x.teamName.toLowerCase()===t));
+  if(p){if(!t)$('teamName').value=p.teamName;$('role').value=p.role;$('academic').value=p.academic||'Eligible'}
+  exHint();
+}
+$('teamName').addEventListener('input',()=>{fillLists();autofill()});
+$('name').addEventListener('input',autofill);
+const mKey=(p,m,i)=>m.matchNo?'L:'+m.matchNo.toLowerCase():'T:'+p.teamName.toLowerCase()+'#'+i;
+const mLabel=(p,m,i)=>m.matchNo||('Game '+(i+1)+' ('+p.teamName+')');
+const getAll=()=>players;
+function fillMatches(){
+  const sel=$('matchFilter'),cur=sel.value,mm=new Map();
+  players.forEach(p=>(p.matchHistory||[]).forEach((m,i)=>{const k=mKey(p,m,i);if(!mm.has(k))mm.set(k,mLabel(p,m,i))}));
+  const opts=[...mm].sort((a,b)=>a[1].localeCompare(b[1],undefined,{numeric:true}));
+  sel.innerHTML='<option value="ALL">All Matches</option>'+opts.map(([k,l])=>`<option value="${esc(k)}">${esc(l)}</option>`).join('');
+  sel.value=opts.some(o=>o[0]===cur)?cur:'ALL';
+}
+function viewPlayers(){
+  const k=$('matchFilter').value;if(k==='ALL')return players;
+  const out=[];
+  players.forEach(p=>(p.matchHistory||[]).forEach((m,i)=>{if(mKey(p,m,i)===k)out.push({...p,...m,id:p.id,matchHistory:[m],gamesPlayed:1})}));
+  return out;
+}
+function matchDetail(list){
+  const k=$('matchFilter').value,c=$('matchCard');
+  if(k==='ALL'){c.hidden=true;return}
+  c.hidden=false;
+  $('matchTitle').textContent='🎮 Match: '+$('matchFilter').selectedOptions[0].textContent;
+  $('matchMeta').textContent=list.length+' player'+(list.length===1?'':'s')+' shown';
+  $('matchBody').innerHTML=list.length?list.map(p=>{
+    const s=score(p);
+    return `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.teamName)}</td><td>${esc(p.role)}</td><td class="mono">${p.kills}/${p.deaths}/${p.assists}</td><td class="mono">${nf(p.heroDmg)}</td><td class="mono">${nf(p.turretDmg)}</td><td class="mono">${nf(p.dmgTaken)}</td><td class="mono">${nf(p.totalGold)}</td><td class="mono">${nf(p.tfPart,1)}%</td><td class="mono">${p.matchTime?nf(p.matchTime,1):'-'}</td><td>${p.comms??'-'}</td><td>${p.resilience??'-'}</td><td>${p.versatility??'-'}</td><td><b class="mono" style="color:var(--goldink)">${s.overall}${s.rated?'':'*'}</b></td></tr>`}).join('')
+    :'<tr><td colspan="14" class="empty">No players match the selected filters for this match.</td></tr>';
+}
+let curId=null;
+const BLUE=[0,58,112],GOLD=[255,199,44],ZEBRA=[243,246,252],HILITE=[255,246,217];
+const nf=(v,d)=>v==null||isNaN(v)?'-':d?(+v).toFixed(d):Math.round(v).toLocaleString('en-US');
+function newPdf(title,sub,orient){
+  const J=window.jspdf&&window.jspdf.jsPDF;
+  if(!J){alert('The PDF library could not load. Check your connection and try again.');return null}
+  const doc=new J({unit:'pt',format:'a4',orientation:orient||'p'});
+  const w=doc.internal.pageSize.getWidth();
+  doc.setFillColor(...BLUE);doc.rect(0,0,w,72,'F');doc.setFillColor(...GOLD);doc.rect(0,72,w,5,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(...GOLD);doc.text(title,36,34);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(255,255,255);doc.text(sub,36,54);
+  return doc;
+}
+function finishPdf(doc,name){
+  const n=doc.getNumberOfPages(),w=doc.internal.pageSize.getWidth(),h=doc.internal.pageSize.getHeight();
+  for(let i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120,130,150);
+    doc.text('NU Bulldogs MLBB Varsity Tryouts - generated '+new Date().toLocaleDateString('en-US'),36,h-20);
+    doc.text('Page '+i+' of '+n,w-36,h-20,{align:'right'})}
+  saveFile(name,doc.output('blob'));
+}
+function pdfBoard(){
+  const rf=$('roleFilter').value,tf=$('teamFilter').value;const players=viewPlayers();
+  const sc=new Map(players.map(p=>[p.id,score(p)]));
+  const tops={};players.forEach(p=>{const s=sc.get(p.id).overall;if(!tops[p.role]||s>tops[p.role].s)tops[p.role]={id:p.id,s}});
+  const topIds=Object.values(tops).map(t=>t.id);
+  const list=players.filter(p=>(rf==='ALL'||p.role===rf)&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
+  if(!list.length)return alert('No players to export.');
+  const doc=newPdf('NU Bulldogs - MLBB Tryout Leaderboard',($('matchFilter').value==='ALL'?'':'Match: '+$('matchFilter').selectedOptions[0].textContent+'   |   ')+'Team: '+(tf==='ALL'?'All':tf)+'   |   Role: '+(rf==='ALL'?'All':rf)+'   |   '+list.length+' player'+(list.length===1?'':'s'),'l');
+  if(!doc)return;
+  doc.autoTable({startY:92,theme:'grid',styles:{fontSize:8,cellPadding:4,lineColor:[219,226,240]},
+    headStyles:{fillColor:BLUE,textColor:255},alternateRowStyles:{fillColor:ZEBRA},
+    head:[['#','Player','Team','Role','GP','K/D/A','TF %','Hero Dmg','Turret','Dmg Taken','Gold','Time','Quant','Qual','Overall']],
+    body:list.map((p,i)=>{const s=sc.get(p.id);return [i+1,p.name+(topIds.includes(p.id)?' [TOP]':''),p.teamName,p.role,p.gamesPlayed,nf(p.kills,1)+'/'+nf(p.deaths,1)+'/'+nf(p.assists,1),nf(p.tfPart,1),nf(p.heroDmg),nf(p.turretDmg),nf(p.dmgTaken),nf(p.totalGold),p.matchTime?nf(p.matchTime,1):'-',s.quant,s.rated?s.qual:'Pending',s.overall+(s.rated?'':'*')]}),
+    didParseCell:d=>{if(d.section==='body'&&topIds.includes(list[d.row.index].id))d.cell.styles.fillColor=HILITE}});
+  const y=doc.lastAutoTable.finalY+14;
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);
+  doc.text('Highlighted rows marked [TOP] are the top candidate in each role. An asterisk (*) on an Overall score means it is provisional (coach ratings pending). Overall = 60% match stats + 40% coach evaluation. Time is in minutes.',36,y,{maxWidth:doc.internal.pageSize.getWidth()-72});
+  finishPdf(doc,'NU_MLBB_Leaderboard_'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+function pdfPlayer(id){
+  const p=players.find(x=>x.id===id);if(!p)return;
+  const s=score(p),h=p.matchHistory||[];
+  const doc=newPdf(p.name,p.teamName+'   |   '+p.role+'   |   '+(p.academic||'Eligible')+'   |   '+p.gamesPlayed+' match'+(p.gamesPlayed===1?'':'es'));
+  if(!doc)return;
+  const w=doc.internal.pageSize.getWidth(),bw=(w-72-24)/3;
+  [['Quantitative',s.quant+'/100'],['Qualitative',s.rated?s.qual+'/100':'Pending'],['Overall Index',s.overall+'/100'+(s.rated?'':' *')]].forEach(([l,v],i)=>{
+    const x=36+i*(bw+12),o=i===2;
+    doc.setFillColor(...(o?HILITE:ZEBRA));doc.setDrawColor(...(o?GOLD:[219,226,240]));doc.roundedRect(x,92,bw,52,6,6,'FD');
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);doc.text(l.toUpperCase(),x+bw/2,108,{align:'center'});
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(...(o?[107,78,0]:BLUE));doc.text(v,x+bw/2,132,{align:'center'});
+  });
+  const cells=[['KDA Ratio',s.kda],...GROUPS.flatMap(g=>g[2]).map(f=>[f.l,fmt(f,p[f.k]).replace('—','-')])];
+  const rows=[];for(let i=0;i<cells.length;i+=2)rows.push([...cells[i],...(cells[i+1]||['',''])]);
+  const common={theme:'grid',styles:{fontSize:8.5,cellPadding:4,lineColor:[219,226,240]},headStyles:{fillColor:BLUE,textColor:255},alternateRowStyles:{fillColor:ZEBRA}};
+  doc.autoTable({...common,startY:160,head:[[{content:'Cumulative Averages',colSpan:4}]],body:rows,columnStyles:{0:{textColor:[90,100,125]},1:{fontStyle:'bold'},2:{textColor:[90,100,125]},3:{fontStyle:'bold'}}});
+  doc.autoTable({...common,startY:doc.lastAutoTable.finalY+18,styles:{...common.styles,fontSize:7,cellPadding:3},
+    head:[[{content:'Match History',colSpan:12}],['Game','Date','K/D/A','Hero Dmg','Turret','Taken','Gold','TF %','Time','Comms','Resil.','Pool']],
+    body:h.length?h.map((m,i)=>[i+1,m.timestamp||'-',m.kills+'/'+m.deaths+'/'+m.assists,nf(m.heroDmg),nf(m.turretDmg),nf(m.dmgTaken),nf(m.totalGold),nf(m.tfPart,1)+'%',m.matchTime?nf(m.matchTime,1)+' min':'-',m.comms??'-',m.resilience??'-',m.versatility??'-']):[[{content:'No match records logged.',colSpan:12}]]});
+  if(!s.rated){doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);
+    doc.text('* Provisional score: coach ratings are still pending, so the Overall Index uses match stats only.',36,doc.lastAutoTable.finalY+14)}
+  finishPdf(doc,'NU_MLBB_'+p.name.replace(/[^\w-]+/g,'_')+'.pdf');
+}
+const bp=document.createElement('button');bp.className='btn2';bp.textContent='📄 Export PDF';bp.onclick=pdfBoard;$('roleFilter').after(bp);
+const mp=document.createElement('button');mp.className='btn2';mp.textContent='📄 PDF';mp.onclick=()=>pdfPlayer(curId);
+{const x=$('mX'),wr=document.createElement('div');wr.style.cssText='display:flex;gap:6px';x.replaceWith(wr);wr.append(mp,x)}
+$('bImp').onclick=()=>$('imp').click();
+$('imp').onchange=ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data))return alert('Invalid JSON format. Please upload a valid tryout export file.');
+      data.forEach(p=>{
+        if(!p.matchHistory||!p.matchHistory.length){
+          const m={matchId:Date.now(),timestamp:'Imported Record'};
+          KEYS.forEach(k=>m[k]=p[k]??(['comms','resilience','versatility','matchTime'].includes(k)?null:0));
+          p.matchHistory=[m];
+        }
+        recalc(p);
+      });
+      if(players.length&&confirm("MERGE imported players with current data? Click 'Cancel' to REPLACE current data instead.")){
+        data.forEach(imp=>{
+          const l=players.find(p=>p.name.toLowerCase()===imp.name.toLowerCase()&&p.teamName.toLowerCase()===imp.teamName.toLowerCase());
+          if(l){l.matchHistory=l.matchHistory.concat(imp.matchHistory);recalc(l)}else players.push(imp);
+        });
+      }else players=data;
+      save();alert('Successfully imported tryout data!');
+    }catch(err){alert('Error parsing JSON file: '+err.message)}
+  };
+  r.readAsText(f);ev.target.value='';
+};
+save();
+</script>
+</body>
+</html>
