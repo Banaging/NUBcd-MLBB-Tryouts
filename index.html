@@ -76,7 +76,7 @@ tbody tr:hover td{background:rgba(11,92,173,.07)}
 .sw button{cursor:pointer;border:0;background:none;color:var(--mut);font:700 15px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:9px}
 .sw button.on{background:var(--blue);color:#fff;box-shadow:inset 0 -3px var(--gold)}
 .bd{display:inline-block;margin:2px 3px 2px 0;padding:2px 8px;border-radius:99px;font:700 11px Inter,sans-serif;color:#fff;white-space:nowrap}
-.bd.a{background:#1f6fd1}.bd.s{background:#d6384a}.bd.p{background:#7c3fc4}.bd.f{background:#0d8a5e}.bd.w{background:#FFC72C;color:#3a2a00}
+.bd.a{background:#1f6fd1}.bd.s{background:#d6384a}.bd.p{background:#7c3fc4}.bd.f{background:#0d8a5e}.bd.w{background:#FFC72C;color:#3a2a00}.bd.c{background:#0e8a96}
 #ccmp,#mcmp{position:fixed;inset:0;background:rgba(0,20,45,.7);backdrop-filter:blur(3px);z-index:70;display:none;align-items:center;justify-content:center;padding:16px}
 #ccmp.on,#mcmp.on{display:flex}
 .pn2{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--gold);border-radius:18px;width:min(1100px,100%);max-height:92vh;overflow-y:auto;padding:16px}
@@ -125,7 +125,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
           <div><label>Player IGN / Name</label><input id="name" required list="nameList" autocomplete="off" placeholder="Pick or type a player"><datalist id="nameList"></datalist></div>
           <div><label>Primary Role</label><select id="role">
             <option>Roamer</option><option>Jungler</option><option>Mid Laner</option><option>Gold Laner</option><option>EXP Laner</option></select></div>
-          <div><label>Academic Status</label><select id="academic"><option>Eligible</option><option>Probationary</option></select></div>
+          
           <div style="grid-column:1/-1"><label>Match / Game ID (optional)</label><input id="matchNo" placeholder="e.g. Game 1 - use the same ID for every player in that game"></div>
           <div id="exHint" class="mut" hidden style="grid-column:1/-1;color:var(--goldink);font-weight:600"></div>
         </div>
@@ -166,6 +166,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
           <div><label>Player Handle</label><input id="cName" required list="cNames" autocomplete="off" placeholder="Pick or type a player"><datalist id="cNames"></datalist></div>
           <div><label>Game Mode</label><select id="cMode"><option value="HP">Hardpoint</option><option value="SD">Search &amp; Destroy</option><option value="CTL">Control</option></select></div>
           <div><label id="cDurL">Match Duration (minutes)</label><input type="number" id="cDur" required min="1" step="0.1"></div>
+          <div style="grid-column:1/-1"><label>Primary Role</label><select id="cRole"></select></div>
         </div>
         <div class="sec"><h3 class="disp">⚔️ End-Game Stats</h3><div class="g c2">
           <div><label>Score</label><input type="number" id="cScore" required min="0"></div>
@@ -183,7 +184,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
         <div class="t"><div><h2>🏆 CODM Leaderboard</h2><div class="mut">Click a name for the coach evaluation panel.</div></div>
           <div style="display:flex;gap:8px"><button class="btn2" id="cCmp">⚖️ Compare</button><button class="btn2" id="cExp">📥 Export JSON</button><button class="btn2" id="cClr">🗑️ Reset</button></div></div>
         <div class="tabs" id="cTabs"></div>
-        <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role Badges</th><th>HP/SD/CTL</th><th>KD</th><th>APK</th><th>IKR</th><th>Quant</th><th>Qual</th><th>Readiness</th></tr></thead><tbody id="cLb"></tbody></table></div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>HP/SD/CTL</th><th>KD</th><th>APK</th><th>IKR</th><th>Quant</th><th>Qual</th><th>Readiness</th></tr></thead><tbody id="cLb"></tbody></table></div>
       </div>
       <div class="legend" id="cLeg"></div>
     </section>
@@ -193,7 +194,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
 <div id="modal"><div class="mb">
   <div class="pad" style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
     <div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h2 id="mName" style="margin:0;font-size:32px;color:var(--blue2)"></h2><span class="pill" id="mRole"></span></div>
-    <div class="mut">Team: <b id="mTeam"></b> · Matches: <b id="mGames"></b> · <span id="mAcad"></span></div></div>
+    <div class="mut">Team: <b id="mTeam"></b> · Matches: <b id="mGames"></b></div></div>
     <button class="btn" style="color:var(--ink);border-color:var(--line);background:var(--field)" id="mX">✕</button>
   </div>
   <div class="tabs"><button class="tab on" id="t1">📊 Averages</button><button class="tab" id="t2">🎮 Match History (<span id="mHc"></span>)</button></div>
@@ -248,7 +249,7 @@ function save(){
 }
 $('form').onsubmit=e=>{
   e.preventDefault();
-  const teamName=$('teamName').value.trim(),name=$('name').value.trim(),role=$('role').value,academic=$('academic').value;
+  const teamName=$('teamName').value.trim(),name=$('name').value.trim(),role=$('role').value;
   const m={matchId:Date.now(),timestamp:new Date().toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})};
   KEYS.forEach(k=>{const v=parseFloat($(k).value);m[k]=isNaN(v)?null:v});m.matchNo=$('matchNo').value.trim();
   if(editing){
@@ -257,13 +258,13 @@ $('form').onsubmit=e=>{
       const old=p.matchHistory[editing.i];m.matchId=old.matchId;m.timestamp=old.timestamp;
       p.matchHistory[editing.i]=m;
       if($('applyAll').checked)p.matchHistory.forEach(x=>{x.comms=m.comms;x.resilience=m.resilience;x.versatility=m.versatility});
-      Object.assign(p,{teamName,name,role,academic});recalc(p);
+      Object.assign(p,{teamName,name,role});recalc(p);
     }
     stopEdit();save();return;
   }
   const ex=players.find(p=>p.name.toLowerCase()===name.toLowerCase()&&p.teamName.toLowerCase()===teamName.toLowerCase());
-  if(ex){(ex.matchHistory=ex.matchHistory||[]).push(m);ex.role=role;ex.academic=academic;recalc(ex)}
-  else players.push({id:Date.now(),teamName,name,role,academic,gamesPlayed:1,matchHistory:[m],...m});
+  if(ex){(ex.matchHistory=ex.matchHistory||[]).push(m);ex.role=role;recalc(ex)}
+  else players.push({id:Date.now(),teamName,name,role,gamesPlayed:1,matchHistory:[m],...m});
   save();
   KEYS.forEach(k=>$(k).value='');$('name').value='';exHint();$('name').focus();
 };
@@ -307,7 +308,7 @@ function openModal(id){
   const p=players.find(x=>x.id===id);if(!p)return;
   const s=score(p);
   curId=p.id;$('mName').textContent=p.name;$('mRole').textContent=p.role;$('mTeam').textContent=p.teamName;
-  $('mGames').textContent=p.gamesPlayed;$('mAcad').textContent=p.academic;
+  $('mGames').textContent=p.gamesPlayed;
   $('mHc').textContent=(p.matchHistory||[]).length;
   $('mQ').textContent=s.quant+'/100';$('mL').textContent=s.rated?s.qual+'/100':'Pending';$('mO').textContent=s.overall+'/100'+(s.rated?'':' *');
   $('mAvg').innerHTML=`<div class="sec"><h3 class="disp">KDA Ratio</h3><div class="kv"><b style="color:var(--ok)">${s.kda}</b></div></div>`+
@@ -326,7 +327,7 @@ let editing=null;
 function stopEdit(){editing=null;$('form').reset();$('goBtn').textContent='➕ Save Match Performance';$('editBar').hidden=true}
 function startEdit(pid,i){
   const p=players.find(x=>x.id===pid),m=p&&(p.matchHistory||[])[i];if(!m)return;
-  $('teamName').value=p.teamName;$('name').value=p.name;$('role').value=p.role;$('academic').value=p.academic||'Eligible';
+  $('teamName').value=p.teamName;$('name').value=p.name;$('role').value=p.role;
   KEYS.forEach(k=>$(k).value=m[k]==null?'':m[k]);$('matchNo').value=m.matchNo||'';
   editing={pid,i};$('applyAll').checked=false;
   $('goBtn').textContent='💾 Update Match';$('editMsg').textContent='Editing Game '+(i+1)+' of '+p.name;$('editBar').hidden=false;
@@ -378,7 +379,7 @@ function autofill(){
   if(editing)return;
   const t=$('teamName').value.trim().toLowerCase(),n=$('name').value.trim().toLowerCase();
   const p=players.find(x=>x.name.toLowerCase()===n&&(!t||x.teamName.toLowerCase()===t));
-  if(p){if(!t)$('teamName').value=p.teamName;$('role').value=p.role;$('academic').value=p.academic||'Eligible'}
+  if(p){if(!t)$('teamName').value=p.teamName;$('role').value=p.role}
   exHint();
 }
 $('teamName').addEventListener('input',()=>{fillLists();autofill()});
@@ -460,7 +461,7 @@ function pdfBoard(){
 function pdfPlayer(id){
   const p=players.find(x=>x.id===id);if(!p)return;
   const s=score(p),h=p.matchHistory||[];
-  const doc=newPdf(p.name,p.teamName+'   |   '+p.role+'   |   '+(p.academic||'Eligible')+'   |   '+p.gamesPlayed+' match'+(p.gamesPlayed===1?'':'es'));
+  const doc=newPdf(p.name,p.teamName+'   |   '+p.role+'   |   '+p.gamesPlayed+' match'+(p.gamesPlayed===1?'':'es'));
   if(!doc)return;
   const w=doc.internal.pageSize.getWidth(),bw=(w-72-24)/3;
   [['Quantitative',s.quant+'/100'],['Qualitative',s.rated?s.qual+'/100':'Pending'],['Overall Index',s.overall+'/100'+(s.rated?'':' *')]].forEach(([l,v],i)=>{
@@ -515,8 +516,11 @@ save();
 <script>
 (()=>{
 const CK='codm_varsity_v1',MODES={HP:'Hardpoint',SD:'S&D',CTL:'Control'},W={HP:.4,SD:.35,CTL:.25},KS=['HP','SD','CTL'];
-const TABS=[['ALL','All Players'],['slayer','Slayers'],['anchor','Anchors'],['flex','Flex'],['sd','S&D Specialists']];
-const BD={anchor:['a','🛡️ Anchor Standout'],slayer:['s','⚔️ Entry / Slayer'],sd:['p','🎯 S&D Clutch/Sniper'],flex:['f','🔄 Versatile Flex'],flag:['w','⚠️ Low Impact Fragger']};
+const TABS=[['ALL','All Players'],['slayer','Slayers'],['anchor','Anchors'],['obj','Objective'],['entry','Entry'],['support','Supporters']];
+const BD={anchor:['a','🛡️ Anchor'],slayer:['s','⚔️ Slayer'],entry:['p','💥 Entry'],obj:['f','📍 Objective'],support:['c','🤝 Supporter / Assist'],flag:['w','⚠️ Low Impact Fragger']};
+const ROLES={slayer:'Slayer',anchor:'Anchor',obj:'Objective',entry:'Entry',support:'Supporter / Assist'};
+const roleOpts=sel=>'<option value="">Unassigned</option>'+Object.keys(ROLES).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${ROLES[k]}</option>`).join('');
+const roleTag=p=>p.role&&BD[p.role]?bd(p.role):'<span class="mut">Unassigned</span> ';
 const QS=[['comms','Communication & Callouts'],['coach','Coachability & Composure'],['syn','Team Synergy / Adaptability']];
 let cp=[],tab='ALL',openId=null;
 try{cp=JSON.parse(localStorage.getItem(CK))||[]}catch(e){cp=[]}
@@ -537,15 +541,16 @@ function agg(p){
   KS.forEach(k=>{o.cnt[k]=by(k).length;o.c[k]=avg(by(k),x=>x.r.comp)});
   o.modes=KS.filter(k=>o.cnt[k]).length;
   o.kd=avg(L,x=>x.r.KD)||0;o.diff=avg(L,x=>x.r.DIFF)||0;o.apk=avg(L,x=>x.r.APK)||0;o.ikr=avg(L,x=>x.r.IKR)||0;
-  o.kills=avg(L,x=>x.m.k)||0;o.imp=avg(L,x=>x.m.imp)||0;
+  o.kills=avg(L,x=>x.m.k)||0;o.imp=avg(L,x=>x.m.imp)||0;o.deaths=avg(L,x=>x.m.d)||0;o.ast=avg(L,x=>x.m.a)||0;o.spx=avg(L,x=>x.m.score/x.m.dur)||0;
   o.hpTime=avg(by('HP'),x=>x.m.time);o.obj=avg(by('HP'),x=>x.r.OBJ);o.sdIkr=avg(by('SD'),x=>x.r.IKR);
   return o;
 }
 function analyze(){
   const A=cp.map(p=>({p,a:agg(p)})),best={},big=A.length>=5;
   KS.forEach(k=>best[k]=Math.max(0,...A.map(x=>x.a.c[k]??0)));
-  const pIKR=avg(A,x=>x.a.ikr),sdV=A.filter(x=>x.a.c.SD!=null).map(x=>x.a.c.SD);
-  const sdCut=sdV.length?cut(sdV,.15,true):null,kCut=cut(A.map(x=>x.a.kills),.2,true),iCut=cut(A.map(x=>x.a.imp),.3,false);
+  const T=(f,p)=>cut(A.map(x=>x.a[f]),p,true),iT=T('imp',.3),iM=T('imp',.5),kT=T('kills',.3),sT=T('spx',.3),sM=T('spx',.5),kdM=T('kd',.5),aM=T('ast',.5),pI=avg(A,x=>x.a.imp);
+  const kCut=cut(A.map(x=>x.a.kills),.2,true),iCut=cut(A.map(x=>x.a.imp),.3,false),tm={};
+  A.forEach(x=>{const k=x.p.team.toLowerCase();(tm[k]=tm[k]||[]).push(x.a.deaths)});
   A.forEach(x=>{
     const a=x.a,t=a.hpTime,b=[];let ws=0,s=0;a.sc={};
     KS.forEach(k=>{if(a.c[k]!=null){a.sc[k]=best[k]>0?Math.max(0,Math.min(100,a.c[k]/best[k]*100)):0;s+=a.sc[k]*W[k];ws+=W[k]}});
@@ -553,15 +558,12 @@ function analyze(){
     const q=x.p.qual||{},rs=QS.map(([k])=>q[k]&&q[k].r);
     a.rated=rs.every(r=>r>0);a.qual=a.rated?rs.reduce((u,r)=>u+r,0)/15*100:null;
     a.ready=a.rated?a.quant*.5+a.qual*.5:a.quant;
-    if(t!=null&&t>=60&&a.obj>3)b.push('anchor');
-    if(big&&a.diff>=5&&a.ikr>=pIKR&&(t==null||t<30))b.push('slayer');
-    if(big&&a.c.SD!=null&&a.c.SD>=sdCut&&a.sdIkr>1.2)b.push('sd');
-    if(a.modes>=2&&a.apk>=.35&&a.diff>=0)b.push('flex');
+    
     if(big&&a.kills>=kCut&&a.imp<=iCut&&(t==null||t<15))b.push('flag');
     a.badges=b;
   });
   const top={};
-  ['anchor','slayer','sd','flex'].forEach(r=>{const c=A.filter(x=>x.a.badges.includes(r)).sort((m,n)=>n.a.ready-m.a.ready)[0];if(c)top[c.p.id]=(top[c.p.id]||[]).concat(r)});
+  ['entry','slayer','anchor','obj','support'].forEach(r=>{const c=A.filter(x=>x.p.role===r).sort((m,n)=>n.a.ready-m.a.ready)[0];if(c)top[c.p.id]=(top[c.p.id]||[]).concat(r)});
   return{A,top};
 }
 function cSave(){try{localStorage.setItem(CK,JSON.stringify(cp))}catch(e){}cRender()}
@@ -571,14 +573,14 @@ function cLists(){
   $('cNames').innerHTML=names.map(x=>`<option value="${esc(x)}">`).join('');
 }
 function cRender(){
-  const{A,top}=analyze(),list=A.filter(x=>tab==='ALL'||x.a.badges.includes(tab)).sort((m,n)=>n.a.ready-m.a.ready),bestR=[...A].sort((m,n)=>n.a.ready-m.a.ready)[0];
+  const{A,top}=analyze(),list=A.filter(x=>tab==='ALL'||x.p.role===tab).sort((m,n)=>n.a.ready-m.a.ready),bestR=[...A].sort((m,n)=>n.a.ready-m.a.ready)[0];
   $('cStats').innerHTML=[[A.length,'Candidates'],[A.reduce((s,x)=>s+x.a.n,0),'Matches Logged'],[bestR?esc(bestR.p.name)+' · '+Math.round(bestR.a.ready):'—','Top Readiness']].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
   $('cTabs').innerHTML=TABS.map(([k,l])=>`<button class="tab ${k===tab?'on':''}" data-t="${k}">${l}</button>`).join('');
   $('cLb').innerHTML=list.length?list.map((x,i)=>{
     const{p,a}=x,t=top[p.id];
-    return `<tr class="${t?'top':''}"><td class="rank">${i+1}</td><td><button class="link" data-o="${p.id}">${esc(p.name)}</button>${t?t.map(r=>`<span class="badge">TOP ${r.toUpperCase()}</span>`).join(''):''}</td><td><span class="pill">${esc(p.team)}</span></td><td>${a.badges.length?a.badges.map(bd).join(''):'<span class="mut">-</span>'}</td><td class="mono">${a.cnt.HP}/${a.cnt.SD}/${a.cnt.CTL}</td><td class="mono">${a.kd.toFixed(2)}</td><td class="mono">${a.apk.toFixed(2)}</td><td class="mono">${a.ikr.toFixed(2)}</td><td class="mono" style="color:var(--blue2)">${Math.round(a.quant)}</td><td class="mono">${a.rated?Math.round(a.qual):'<span class="pill">Pending</span>'}</td><td style="min-width:90px"><b class="mono" style="color:var(--goldink);font-size:15px">${Math.round(a.ready)}${a.rated?'':'*'}</b><div class="bar"><i style="width:${a.ready}%"></i></div></td></tr>`}).join('')
+    return `<tr class="${t?'top':''}"><td class="rank">${i+1}</td><td><button class="link" data-o="${p.id}">${esc(p.name)}</button>${t?t.map(r=>`<span class="badge">TOP ${r.toUpperCase()}</span>`).join(''):''}</td><td><span class="pill">${esc(p.team)}</span></td><td>${roleTag(p)}${a.badges.map(bd).join('')}</td><td class="mono">${a.cnt.HP}/${a.cnt.SD}/${a.cnt.CTL}</td><td class="mono">${a.kd.toFixed(2)}</td><td class="mono">${a.apk.toFixed(2)}</td><td class="mono">${a.ikr.toFixed(2)}</td><td class="mono" style="color:var(--blue2)">${Math.round(a.quant)}</td><td class="mono">${a.rated?Math.round(a.qual):'<span class="pill">Pending</span>'}</td><td style="min-width:90px"><b class="mono" style="color:var(--goldink);font-size:15px">${Math.round(a.ready)}${a.rated?'':'*'}</b><div class="bar"><i style="width:${a.ready}%"></i></div></td></tr>`}).join('')
     :'<tr><td colspan="11" class="empty">No players here yet. Add a match to get started.</td></tr>';
-  $('cLeg').innerHTML=`<b>Scoring:</b> each mode's composite is scaled against the best player in your current pool (best = 100), then combined 40% Hardpoint, 35% S&amp;D, 25% Control (re-weighted across the modes a player has played). Roster Readiness = 50% quantitative + 50% coach ratings (1-5 converted to 100). An asterisk (*) means provisional until all three coach ratings are in. Pool-based badges (Slayer, S&amp;D, Low Impact) switch on at 5+ players; you have ${A.length}. Highlighted rows are the top player in a role.`;
+  $('cLeg').innerHTML=`<b>Scoring:</b> each mode's composite is scaled against the best player in your current pool (best = 100), then combined 40% Hardpoint, 35% S&amp;D, 25% Control (re-weighted across the modes a player has played). Roster Readiness = 50% quantitative + 50% coach ratings (1-5 converted to 100). An asterisk (*) means provisional until all three coach ratings are in. Roles are set by the coach (in the entry form or the player panel). The Low Impact Fragger warning compares players against the pool and switches on at 5+ players; you have ${A.length}. Highlighted rows are the top player in a role.`;
   cLists();
 }
 function cOpen(id){
@@ -586,7 +588,8 @@ function cOpen(id){
   const{p,a}=x,q=p.qual||{},s=n=>n===1?'':'es';
   const avgs=[['KD',a.kd.toFixed(2)],['KD Diff',a.diff.toFixed(1)],['APK',a.apk.toFixed(2)],['IKR',a.ikr.toFixed(2)],['HP Time',a.hpTime==null?'-':a.hpTime.toFixed(0)+'s'],['OBJ Eff.',a.obj==null?'-':a.obj.toFixed(2)]];
   dr.innerHTML=`<div class="pn">
-   <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="margin:0;font-size:30px;color:var(--blue2)">${esc(p.name)}</h2><div class="mut">${esc(p.team)} · ${a.n} match${s(a.n)}</div><div>${a.badges.map(bd).join('')}</div></div><button class="btn2" data-close="1">✕</button></div>
+   <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="margin:0;font-size:30px;color:var(--blue2)">${esc(p.name)}</h2><div class="mut">${esc(p.team)} · ${a.n} match${s(a.n)}</div><div>${roleTag(p)}${a.badges.map(bd).join('')}</div></div><button class="btn2" data-close="1">✕</button></div>
+   <div class="sec"><label>Primary Role</label><select id="dRole">${roleOpts(p.role)}</select></div>
    <div class="g c3 sec"><div class="kv big"><span>Quantitative</span><b>${Math.round(a.quant)}/100</b></div><div class="kv big"><span>Qualitative</span><b>${a.rated?Math.round(a.qual)+'/100':'Pending'}</b></div><div class="kv big o"><span>Roster Readiness</span><b>${Math.round(a.ready)}${a.rated?'':'*'}</b></div></div>
    <div class="sec"><h3 class="disp">Mode scores (vs pool best)</h3><div class="g c3">${KS.map(k=>`<div class="kv"><span>${MODES[k]} · ${a.cnt[k]} match${s(a.cnt[k])}</span><b>${a.c[k]==null?'-':Math.round(a.sc[k])+'/100'}</b></div>`).join('')}</div></div>
    <div class="sec"><h3 class="disp">Averages</h3><div class="g c3">${avgs.map(([l,v])=>`<div class="kv"><span>${l}</span><b>${v}</b></div>`).join('')}</div></div>
@@ -617,12 +620,15 @@ $('cLb').onclick=e=>{const o=e.target.closest('[data-o]');if(o)cOpen(+o.dataset.
 $('cTeam').addEventListener('input',cLists);
 const setMode=()=>{const h=$('cMode').value==='HP';$('cDurL').textContent=h?'Match Duration (minutes)':'Total Rounds';$('cTimeW').hidden=!h;$('cTime').required=h};
 $('cMode').onchange=setMode;setMode();
+$('cRole').innerHTML=Object.keys(ROLES).map(k=>`<option value="${k}">${ROLES[k]}</option>`).join('');
+$('cName').addEventListener('input',()=>{const t=$('cTeam').value.trim().toLowerCase(),n=$('cName').value.trim().toLowerCase(),p=cp.find(z=>z.name.toLowerCase()===n&&(!t||z.team.toLowerCase()===t));if(p){if(!t)$('cTeam').value=p.team;if(p.role)$('cRole').value=p.role}});
+dr.onchange=e=>{if(e.target.id!=='dRole')return;const p=cp.find(z=>z.id===openId);if(p){p.role=e.target.value;const id=openId;cSave();cOpen(id)}};
 $('cForm').onsubmit=e=>{
   e.preventDefault();
   const team=$('cTeam').value.trim(),name=$('cName').value.trim(),mode=$('cMode').value,n=id=>parseFloat($(id).value)||0;
   const m={id:Date.now(),mode,dur:Math.max(n('cDur'),.1),score:n('cScore'),k:n('cK'),d:n('cD'),a:n('cA'),imp:n('cImp'),time:mode==='HP'?n('cTime'):0,ts:new Date().toLocaleString()};
   const p=cp.find(z=>z.name.toLowerCase()===name.toLowerCase()&&z.team.toLowerCase()===team.toLowerCase());
-  if(p)p.matches.push(m);else cp.push({id:Date.now(),team,name,matches:[m],qual:{}});
+  if(p){p.matches.push(m);p.role=$('cRole').value}else cp.push({id:Date.now(),team,name,role:$('cRole').value,matches:[m],qual:{}});
   ['cDur','cScore','cImp','cK','cD','cA','cTime','cName'].forEach(i=>$(i).value='');
   cSave();$('cName').focus();
 };
@@ -630,7 +636,7 @@ $('cExp').onclick=()=>saveFile('CODM_Tryouts.json',JSON.stringify(cp,null,2));
 $('cClr').onclick=()=>{if(confirm('Reset all CODM tryout data?')){cp=[];cClose();cSave()}};
 
 const PC=['#0b5cad','#FFC72C','#0d8a5e','#7c3fc4','#d6384a'];
-let cmp=new Set();const cm=document.createElement('div');cm.id='ccmp';document.body.appendChild(cm);
+let cfR='ALL',cfT='ALL',cmp=new Set();const cm=document.createElement('div');cm.id='ccmp';document.body.appendChild(cm);
 function bars(title,sel,get,fmt,max){
   const vals=sel.map(get),mx=max||Math.max(...vals.map(v=>v||0),.0001);
   return `<div class="cg"><div class="cgt">${title}</div>${sel.map((x,i)=>{const v=vals[i];return `<div class="cr"><span class="cn">${esc(x.p.name)}</span><div class="cb"><i style="width:${v==null?0:Math.max(0,Math.min(100,v/mx*100))}%;background:${PC[i]}"></i></div><b class="mono">${v==null?'-':fmt(v)}</b></div>`}).join('')}</div>`;
@@ -638,8 +644,8 @@ function bars(title,sel,get,fmt,max){
 window.cmpBars=bars;window.cmpPC=PC;
 function cmpRender(){
   cmp=new Set([...cmp].filter(id=>cp.some(p=>p.id===id)));
-  const sy=cm.firstChild?cm.firstChild.scrollTop:0,{A}=analyze(),L=[...A].sort((m,n)=>n.a.ready-m.a.ready),sel=L.filter(x=>cmp.has(x.p.id)),full=cmp.size>=5;
-  let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${cmp.size} selected).</div><div class="chips">${L.map(x=>`<label class="chip ${cmp.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${cmp.has(x.p.id)?'checked':''} ${full&&!cmp.has(x.p.id)?'disabled':''}> ${esc(x.p.name)}</label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
+  const sy=cm.firstChild?cm.firstChild.scrollTop:0,{A}=analyze(),L=[...A].sort((m,n)=>n.a.ready-m.a.ready),sel=L.filter(x=>cmp.has(x.p.id)),full=cmp.size>=5,LF=L.filter(x=>cmp.has(x.p.id)||((cfR==='ALL'||x.p.role===cfR)&&(cfT==='ALL'||x.p.team===cfT)));
+  let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${cmp.size} selected).</div><div class="filters" style="margin-bottom:10px"><select id="cfR"><option value="ALL">All Roles</option>${Object.keys(ROLES).map(k=>`<option value="${k}" ${cfR===k?'selected':''}>${ROLES[k]}</option>`).join('')}</select><select id="cfT"><option value="ALL">All Teams</option>${[...new Set(cp.map(p=>p.team))].map(t=>`<option value="${esc(t)}" ${cfT===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div><div class="chips">${LF.map(x=>`<label class="chip ${cmp.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${cmp.has(x.p.id)?'checked':''} ${full&&!cmp.has(x.p.id)?'disabled':''}> ${esc(x.p.name)}</label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
   if(sel.length<2)h+='<div class="empty">Select at least two players to compare.</div>';
   else{
     const r=v=>Math.round(v),f2=v=>v.toFixed(2),qv=k=>x=>(x.p.qual&&x.p.qual[k]&&x.p.qual[k].r)||null;
@@ -652,12 +658,15 @@ function cmpRender(){
       bars('KD ratio',sel,x=>x.a.kd,f2),bars('Assists per kill (APK)',sel,x=>x.a.apk,f2),bars('Impact-to-kill ratio (IKR)',sel,x=>x.a.ikr,f2),
       ...QS.map(([k,l])=>bars(l+' (1-5)',sel,qv(k),v=>v+'/5',5))
     ].join('')}</div>`;
-    h+=`<h3 class="disp" style="margin:18px 0 0;color:var(--goldink)">📝 Coach Notes</h3><div class="ncs">${sel.map((x,i)=>`<div class="nc" style="border-top:4px solid ${PC[i]}"><b>${esc(x.p.name)}</b> <span class="mut">${esc(x.p.team)} · Readiness ${r(x.a.ready)}${x.a.rated?'':'*'}</span><div>${x.a.badges.map(bd).join('')}</div>${QS.map(([k,l])=>{const q=(x.p.qual||{})[k];return `<div class="nq"><span>${l}</span><b>${q&&q.r?q.r+'/5':'Not rated'}</b><p>${q&&q.c?esc(q.c):'<i class="mut">No comments yet.</i>'}</p></div>`}).join('')}</div>`).join('')}</div>`;
+    h+=`<h3 class="disp" style="margin:18px 0 0;color:var(--goldink)">📝 Coach Notes</h3><div class="ncs">${sel.map((x,i)=>`<div class="nc" style="border-top:4px solid ${PC[i]}"><b>${esc(x.p.name)}</b> <span class="mut">${esc(x.p.team)} · Readiness ${r(x.a.ready)}${x.a.rated?'':'*'}</span><div>${roleTag(x.p)}${x.a.badges.map(bd).join('')}</div>${QS.map(([k,l])=>{const q=(x.p.qual||{})[k];return `<div class="nq"><span>${l}</span><b>${q&&q.r?q.r+'/5':'Not rated'}</b><p>${q&&q.c?esc(q.c):'<i class="mut">No comments yet.</i>'}</p></div>`}).join('')}</div>`).join('')}</div>`;
   }
   cm.innerHTML=h+'</div>';cm.classList.add('on');if(cm.firstChild)cm.firstChild.scrollTop=sy;
 }
 cm.onclick=e=>{if(e.target===cm||e.target.closest('[data-x]'))cm.classList.remove('on')};
-cm.onchange=e=>{const c=e.target.closest('[data-c]');if(c){const id=+c.dataset.c;c.checked?cmp.add(id):cmp.delete(id);cmpRender()}};
+cm.onchange=e=>{
+  if(e.target.id==='cfR'){cfR=e.target.value;return cmpRender()}
+  if(e.target.id==='cfT'){cfT=e.target.value;return cmpRender()}
+  const c=e.target.closest('[data-c]');if(c){const id=+c.dataset.c;c.checked?cmp.add(id):cmp.delete(id);cmpRender()}};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cm.classList.remove('on')});
 $('cCmp').onclick=cmpRender;
 
@@ -675,14 +684,14 @@ cRender();
 })();
 {
 const mm=document.createElement('div');mm.id='mcmp';document.body.appendChild(mm);
-let msel=new Set();
+let mfR='ALL',mfT='ALL',msel=new Set();
 const mRender=()=>{
   const bars=window.cmpBars,PC=window.cmpPC;
   msel=new Set([...msel].filter(id=>players.some(p=>p.id===id)));
   const sy=mm.firstChild?mm.firstChild.scrollTop:0;
-  const L=players.map(p=>({p,s:score(p)})).sort((a,b)=>b.s.overall-a.s.overall),ch=L.filter(x=>msel.has(x.p.id)),full=msel.size>=5;
+  const L=players.map(p=>({p,s:score(p)})).sort((a,b)=>b.s.overall-a.s.overall),ch=L.filter(x=>msel.has(x.p.id)),full=msel.size>=5,LF=L.filter(x=>msel.has(x.p.id)||((mfR==='ALL'||x.p.role===mfR)&&(mfT==='ALL'||x.p.teamName===mfT)));
   const r=v=>Math.round(v),f1=v=>v.toFixed(1),k=v=>(v/1000).toFixed(1)+'k',cv=key=>x=>x.p[key]==null?null:x.p[key],t10=v=>v.toFixed(1)+'/10';
-  let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${msel.size} selected). Stats shown are each player's averages.</div><div class="chips">${L.map(x=>`<label class="chip ${msel.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${msel.has(x.p.id)?'checked':''} ${full&&!msel.has(x.p.id)?'disabled':''}> ${esc(x.p.name)} <span class="mut">${esc(x.p.role)}</span></label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
+  let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${msel.size} selected). Stats shown are each player's averages.</div><div class="filters" style="margin-bottom:10px"><select id="mfR"><option value="ALL">All Roles</option>${['Roamer','Jungler','Mid Laner','Gold Laner','EXP Laner'].map(k=>`<option ${mfR===k?'selected':''}>${k}</option>`).join('')}</select><select id="mfT"><option value="ALL">All Teams</option>${[...new Set(players.map(p=>p.teamName))].map(t=>`<option value="${esc(t)}" ${mfT===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div><div class="chips">${LF.map(x=>`<label class="chip ${msel.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${msel.has(x.p.id)?'checked':''} ${full&&!msel.has(x.p.id)?'disabled':''}> ${esc(x.p.name)} <span class="mut">${esc(x.p.role)}</span></label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
   if(ch.length<2)h+='<div class="empty">Select at least two players to compare.</div>';
   else{
     h+=`<div class="chips" style="margin-top:12px">${ch.map((x,i)=>`<span class="chip on" style="border-color:${PC[i]}"><i style="width:10px;height:10px;border-radius:50%;background:${PC[i]};display:inline-block"></i>${esc(x.p.name)}</span>`).join('')}</div>`;
@@ -700,7 +709,10 @@ const mRender=()=>{
   mm.innerHTML=h+'</div>';mm.classList.add('on');if(mm.firstChild)mm.firstChild.scrollTop=sy;
 };
 mm.onclick=e=>{if(e.target===mm||e.target.closest('[data-x]'))mm.classList.remove('on')};
-mm.onchange=e=>{const c=e.target.closest('[data-c]');if(c){const id=+c.dataset.c;c.checked?msel.add(id):msel.delete(id);mRender()}};
+mm.onchange=e=>{
+  if(e.target.id==='mfR'){mfR=e.target.value;return mRender()}
+  if(e.target.id==='mfT'){mfT=e.target.value;return mRender()}
+  const c=e.target.closest('[data-c]');if(c){const id=+c.dataset.c;c.checked?msel.add(id):msel.delete(id);mRender()}};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')mm.classList.remove('on')});
 const bc=document.createElement('button');bc.className='btn2';bc.textContent='⚖️ Compare';bc.onclick=mRender;bp.before(bc);
 }
