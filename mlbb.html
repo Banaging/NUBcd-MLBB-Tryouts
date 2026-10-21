@@ -72,6 +72,31 @@ tbody tr:hover td{background:rgba(11,92,173,.07)}
 .big.o{background:var(--goldbg);border-color:var(--gold)}.big.o b{color:var(--goldink)}
 .match{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--field)}
 .empty{padding:28px;text-align:center;color:var(--mut)}
+.sw{display:inline-flex;gap:4px;padding:4px;margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.sw button{cursor:pointer;border:0;background:none;color:var(--mut);font:700 15px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;border-radius:9px}
+.sw button.on{background:var(--blue);color:#fff;box-shadow:inset 0 -3px var(--gold)}
+.bd{display:inline-block;margin:2px 3px 2px 0;padding:2px 8px;border-radius:99px;font:700 11px Inter,sans-serif;color:#fff;white-space:nowrap}
+.bd.a{background:#1f6fd1}.bd.s{background:#d6384a}.bd.p{background:#7c3fc4}.bd.f{background:#0d8a5e}.bd.w{background:#FFC72C;color:#3a2a00}
+#ccmp,#mcmp{position:fixed;inset:0;background:rgba(0,20,45,.7);backdrop-filter:blur(3px);z-index:70;display:none;align-items:center;justify-content:center;padding:16px}
+#ccmp.on,#mcmp.on{display:flex}
+.pn2{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--gold);border-radius:18px;width:min(1100px,100%);max-height:92vh;overflow-y:auto;padding:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;margin:0;padding:6px 10px;border:1px solid var(--line);border-radius:99px;background:var(--field);cursor:pointer;font-size:12px;font-weight:600;color:var(--ink)}
+.chip.on{border-color:var(--gold);background:var(--goldbg)}.chip input{width:auto}
+.cgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:14px}
+.cg{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--field)}
+.cgt{font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--blue2);margin-bottom:6px}
+.cr{display:grid;grid-template-columns:90px 1fr 48px;gap:8px;align-items:center;margin:4px 0;font-size:12px}
+.cn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb{height:12px;background:var(--line);border-radius:6px;overflow:hidden}.cb i{display:block;height:100%;border-radius:6px}
+.cr b{text-align:right}
+.ncs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
+.nc{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--field)}
+.nq{margin-top:8px;font-size:12px}.nq span{color:var(--mut);display:block}.nq p{margin:2px 0 0;white-space:pre-wrap}
+#cdr{position:fixed;inset:0;background:rgba(0,20,45,.7);backdrop-filter:blur(3px);z-index:60;display:none;justify-content:flex-end}
+#cdr.on{display:flex}
+#cdr .pn{background:var(--card);width:min(620px,100%);height:100%;overflow-y:auto;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px));border-left:6px solid var(--gold)}
+textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font:inherit;resize:vertical}
 @media(min-width:640px){.c4{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
@@ -87,7 +112,8 @@ tbody tr:hover td{background:rgba(11,92,173,.07)}
   </div>
 </div></header>
 
-<main class="wrap">
+<div class="wrap" style="padding-bottom:0"><div class="sw"><button id="gM" class="on">Mobile Legends</button><button id="gC">Call of Duty Mobile</button></div></div>
+<main class="wrap" id="mlbb">
   <div class="stats" id="stats"></div>
   <div class="grid">
     <section class="card" style="height:fit-content">
@@ -126,6 +152,40 @@ tbody tr:hover td{background:rgba(11,92,173,.07)}
       </div>
       <div class="card" id="matchCard" hidden style="margin-top:16px"><div class="t"><h2 id="matchTitle"></h2><span class="mut" id="matchMeta"></span></div><div class="tw"><table><thead><tr><th>Player</th><th>Team</th><th>Role</th><th>K/D/A</th><th>Hero Dmg</th><th>Turret</th><th>Taken</th><th>Gold</th><th>TF %</th><th>Time</th><th>Comms</th><th>Resil.</th><th>Pool</th><th>Overall</th></tr></thead><tbody id="matchBody"></tbody></table></div></div>
       <div class="legend"><b>Scoring:</b> Overall Index = 60% quantitative match performance (K/D/A, teamfight %, damage, gold, weighted by role) + 40% coach evaluation. Gold rows mark the <b>top candidate in each role</b>. An asterisk (*) means the score is provisional (match stats only) until coach ratings are added.</div>
+    </section>
+  </div>
+</main>
+<main class="wrap" id="codm" hidden>
+  <div class="stats" id="cStats"></div>
+  <div class="grid">
+    <section class="card" style="height:fit-content">
+      <div class="t"><h2>📝 Add CODM Match</h2><span class="pill">End-game stats</span></div>
+      <form id="cForm" class="pad">
+        <div class="who g c2">
+          <div><label>Team Name</label><input id="cTeam" required list="cTeams" autocomplete="off" placeholder="Pick or type a team"><datalist id="cTeams"></datalist></div>
+          <div><label>Player Handle</label><input id="cName" required list="cNames" autocomplete="off" placeholder="Pick or type a player"><datalist id="cNames"></datalist></div>
+          <div><label>Game Mode</label><select id="cMode"><option value="HP">Hardpoint</option><option value="SD">Search &amp; Destroy</option><option value="CTL">Control</option></select></div>
+          <div><label id="cDurL">Match Duration (minutes)</label><input type="number" id="cDur" required min="1" step="0.1"></div>
+        </div>
+        <div class="sec"><h3 class="disp">⚔️ End-Game Stats</h3><div class="g c2">
+          <div><label>Score</label><input type="number" id="cScore" required min="0"></div>
+          <div><label>Impact</label><input type="number" id="cImp" required min="0"></div>
+          <div><label>Kills</label><input type="number" id="cK" required min="0"></div>
+          <div><label>Deaths</label><input type="number" id="cD" required min="0"></div>
+          <div><label>Assists</label><input type="number" id="cA" required min="0"></div>
+          <div id="cTimeW"><label>Hardpoint Time (seconds)</label><input type="number" id="cTime" min="0"></div>
+        </div></div>
+        <button class="go" type="submit">➕ Save Match</button>
+      </form>
+    </section>
+    <section>
+      <div class="card">
+        <div class="t"><div><h2>🏆 CODM Leaderboard</h2><div class="mut">Click a name for the coach evaluation panel.</div></div>
+          <div style="display:flex;gap:8px"><button class="btn2" id="cCmp">⚖️ Compare</button><button class="btn2" id="cExp">📥 Export JSON</button><button class="btn2" id="cClr">🗑️ Reset</button></div></div>
+        <div class="tabs" id="cTabs"></div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role Badges</th><th>HP/SD/CTL</th><th>KD</th><th>APK</th><th>IKR</th><th>Quant</th><th>Qual</th><th>Readiness</th></tr></thead><tbody id="cLb"></tbody></table></div>
+      </div>
+      <div class="legend" id="cLeg"></div>
     </section>
   </div>
 </main>
@@ -251,7 +311,7 @@ function openModal(id){
   $('mHc').textContent=(p.matchHistory||[]).length;
   $('mQ').textContent=s.quant+'/100';$('mL').textContent=s.rated?s.qual+'/100':'Pending';$('mO').textContent=s.overall+'/100'+(s.rated?'':' *');
   $('mAvg').innerHTML=`<div class="sec"><h3 class="disp">KDA Ratio</h3><div class="kv"><b style="color:var(--ok)">${s.kda}</b></div></div>`+
-    GROUPS.map(([t,c,fs])=>`<div class="sec"><h3 class="disp">${t.replace('(1–10)','')} averages</h3><div class="g ${c}">${fs.map(f=>`<div class="kv"><span>${f.l}</span><b>${fmt(f,p[f.k])}</b></div>`).join('')}</div></div>`).join('');
+    GROUPS.map(([t,c,fs])=>`<div class="sec"><h3 class="disp">${t.replace('(1–10)','')} averages</h3><div class="g ${c}">${fs.map(f=>`<div class="kv"><span>${f.l}</span><b>${fmt(f,p[f.k])}</b></div>`).join('')}</div></div>`).join('')+notesHtml(p);
   const h=p.matchHistory||[];
   $('p2').innerHTML=h.length?h.map((m,i)=>{
     const k=((m.kills+m.assists)/(m.deaths||1)).toFixed(1);
@@ -351,6 +411,14 @@ function matchDetail(list){
     :'<tr><td colspan="14" class="empty">No players match the selected filters for this match.</td></tr>';
 }
 let curId=null;
+const NOTE_KEYS=[['comms','Communication'],['resilience','Resilience / Tilt Control'],['versatility','Hero Pool']];
+const notesHtml=p=>{const n=p.notes||{};return `<div class="sec"><h3 class="disp">📝 Coach Notes</h3>${NOTE_KEYS.map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><textarea id="n_${k}" rows="2" placeholder="Observations and comments">${esc(n[k]||'')}</textarea></div>`).join('')}<button class="go" style="margin-top:4px" id="nSave">💾 Save Notes</button></div>`};
+$('mAvg').onclick=e=>{
+  const b=e.target.closest('#nSave');if(!b)return;
+  const p=players.find(x=>x.id===curId);if(!p)return;
+  p.notes={};NOTE_KEYS.forEach(([k])=>p.notes[k]=$('n_'+k).value.trim());
+  save();b.textContent='✅ Saved';setTimeout(()=>{b.textContent='💾 Save Notes'},1500);
+};
 const BLUE=[0,58,112],GOLD=[255,199,44],ZEBRA=[243,246,252],HILITE=[255,246,217];
 const nf=(v,d)=>v==null||isNaN(v)?'-':d?(+v).toFixed(d):Math.round(v).toLocaleString('en-US');
 function newPdf(title,sub,orient){
@@ -443,6 +511,199 @@ $('imp').onchange=ev=>{
   r.readAsText(f);ev.target.value='';
 };
 save();
+</script>
+<script>
+(()=>{
+const CK='codm_varsity_v1',MODES={HP:'Hardpoint',SD:'S&D',CTL:'Control'},W={HP:.4,SD:.35,CTL:.25},KS=['HP','SD','CTL'];
+const TABS=[['ALL','All Players'],['slayer','Slayers'],['anchor','Anchors'],['flex','Flex'],['sd','S&D Specialists']];
+const BD={anchor:['a','🛡️ Anchor Standout'],slayer:['s','⚔️ Entry / Slayer'],sd:['p','🎯 S&D Clutch/Sniper'],flex:['f','🔄 Versatile Flex'],flag:['w','⚠️ Low Impact Fragger']};
+const QS=[['comms','Communication & Callouts'],['coach','Coachability & Composure'],['syn','Team Synergy / Adaptability']];
+let cp=[],tab='ALL',openId=null;
+try{cp=JSON.parse(localStorage.getItem(CK))||[]}catch(e){cp=[]}
+const avg=(a,f)=>a.length?a.reduce((s,x)=>s+f(x),0)/a.length:null;
+const cut=(v,p,desc)=>{const s=[...v].sort((a,b)=>desc?b-a:a-b);return s[Math.max(0,Math.ceil(s.length*p)-1)]};
+const bd=k=>`<span class="bd ${BD[k][0]}">${BD[k][1]}</span>`;
+const dr=document.createElement('div');dr.id='cdr';document.body.appendChild(dr);
+
+function dm(m){
+  const KD=m.k/Math.max(m.d,1),DIFF=m.k-m.d,APK=m.a/Math.max(m.k,1),IKR=m.imp/Math.max(m.k,1),r={KD,DIFF,APK,IKR};
+  if(m.mode==='HP'){r.OBJ=m.time/Math.max(m.d,1);r.SPM=m.score/m.dur;r.comp=KD*25+(m.time/2)*.35+m.imp*.25+APK*15}
+  else if(m.mode==='SD'){r.KPR=m.k/m.dur;r.SPR=m.score/m.dur;r.comp=KD*30+r.SPR*.3+m.imp*.25+APK*15}
+  else{r.SPR=m.score/m.dur;r.comp=DIFF*20+KD*20+r.SPR*.3+m.imp*.2+APK*10}
+  return r;
+}
+function agg(p){
+  const L=p.matches.map(m=>({m,r:dm(m)})),by=k=>L.filter(x=>x.m.mode===k),o={n:L.length,cnt:{},c:{}};
+  KS.forEach(k=>{o.cnt[k]=by(k).length;o.c[k]=avg(by(k),x=>x.r.comp)});
+  o.modes=KS.filter(k=>o.cnt[k]).length;
+  o.kd=avg(L,x=>x.r.KD)||0;o.diff=avg(L,x=>x.r.DIFF)||0;o.apk=avg(L,x=>x.r.APK)||0;o.ikr=avg(L,x=>x.r.IKR)||0;
+  o.kills=avg(L,x=>x.m.k)||0;o.imp=avg(L,x=>x.m.imp)||0;
+  o.hpTime=avg(by('HP'),x=>x.m.time);o.obj=avg(by('HP'),x=>x.r.OBJ);o.sdIkr=avg(by('SD'),x=>x.r.IKR);
+  return o;
+}
+function analyze(){
+  const A=cp.map(p=>({p,a:agg(p)})),best={},big=A.length>=5;
+  KS.forEach(k=>best[k]=Math.max(0,...A.map(x=>x.a.c[k]??0)));
+  const pIKR=avg(A,x=>x.a.ikr),sdV=A.filter(x=>x.a.c.SD!=null).map(x=>x.a.c.SD);
+  const sdCut=sdV.length?cut(sdV,.15,true):null,kCut=cut(A.map(x=>x.a.kills),.2,true),iCut=cut(A.map(x=>x.a.imp),.3,false);
+  A.forEach(x=>{
+    const a=x.a,t=a.hpTime,b=[];let ws=0,s=0;a.sc={};
+    KS.forEach(k=>{if(a.c[k]!=null){a.sc[k]=best[k]>0?Math.max(0,Math.min(100,a.c[k]/best[k]*100)):0;s+=a.sc[k]*W[k];ws+=W[k]}});
+    a.quant=ws?s/ws:0;
+    const q=x.p.qual||{},rs=QS.map(([k])=>q[k]&&q[k].r);
+    a.rated=rs.every(r=>r>0);a.qual=a.rated?rs.reduce((u,r)=>u+r,0)/15*100:null;
+    a.ready=a.rated?a.quant*.5+a.qual*.5:a.quant;
+    if(t!=null&&t>=60&&a.obj>3)b.push('anchor');
+    if(big&&a.diff>=5&&a.ikr>=pIKR&&(t==null||t<30))b.push('slayer');
+    if(big&&a.c.SD!=null&&a.c.SD>=sdCut&&a.sdIkr>1.2)b.push('sd');
+    if(a.modes>=2&&a.apk>=.35&&a.diff>=0)b.push('flex');
+    if(big&&a.kills>=kCut&&a.imp<=iCut&&(t==null||t<15))b.push('flag');
+    a.badges=b;
+  });
+  const top={};
+  ['anchor','slayer','sd','flex'].forEach(r=>{const c=A.filter(x=>x.a.badges.includes(r)).sort((m,n)=>n.a.ready-m.a.ready)[0];if(c)top[c.p.id]=(top[c.p.id]||[]).concat(r)});
+  return{A,top};
+}
+function cSave(){try{localStorage.setItem(CK,JSON.stringify(cp))}catch(e){}cRender()}
+function cLists(){
+  const t=$('cTeam').value.trim().toLowerCase(),teams=[...new Set(cp.map(p=>p.team))],inT=cp.filter(p=>!t||p.team.toLowerCase()===t),names=[...new Set((inT.length?inT:cp).map(p=>p.name))];
+  $('cTeams').innerHTML=teams.map(x=>`<option value="${esc(x)}">`).join('');
+  $('cNames').innerHTML=names.map(x=>`<option value="${esc(x)}">`).join('');
+}
+function cRender(){
+  const{A,top}=analyze(),list=A.filter(x=>tab==='ALL'||x.a.badges.includes(tab)).sort((m,n)=>n.a.ready-m.a.ready),bestR=[...A].sort((m,n)=>n.a.ready-m.a.ready)[0];
+  $('cStats').innerHTML=[[A.length,'Candidates'],[A.reduce((s,x)=>s+x.a.n,0),'Matches Logged'],[bestR?esc(bestR.p.name)+' · '+Math.round(bestR.a.ready):'—','Top Readiness']].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+  $('cTabs').innerHTML=TABS.map(([k,l])=>`<button class="tab ${k===tab?'on':''}" data-t="${k}">${l}</button>`).join('');
+  $('cLb').innerHTML=list.length?list.map((x,i)=>{
+    const{p,a}=x,t=top[p.id];
+    return `<tr class="${t?'top':''}"><td class="rank">${i+1}</td><td><button class="link" data-o="${p.id}">${esc(p.name)}</button>${t?t.map(r=>`<span class="badge">TOP ${r.toUpperCase()}</span>`).join(''):''}</td><td><span class="pill">${esc(p.team)}</span></td><td>${a.badges.length?a.badges.map(bd).join(''):'<span class="mut">-</span>'}</td><td class="mono">${a.cnt.HP}/${a.cnt.SD}/${a.cnt.CTL}</td><td class="mono">${a.kd.toFixed(2)}</td><td class="mono">${a.apk.toFixed(2)}</td><td class="mono">${a.ikr.toFixed(2)}</td><td class="mono" style="color:var(--blue2)">${Math.round(a.quant)}</td><td class="mono">${a.rated?Math.round(a.qual):'<span class="pill">Pending</span>'}</td><td style="min-width:90px"><b class="mono" style="color:var(--goldink);font-size:15px">${Math.round(a.ready)}${a.rated?'':'*'}</b><div class="bar"><i style="width:${a.ready}%"></i></div></td></tr>`}).join('')
+    :'<tr><td colspan="11" class="empty">No players here yet. Add a match to get started.</td></tr>';
+  $('cLeg').innerHTML=`<b>Scoring:</b> each mode's composite is scaled against the best player in your current pool (best = 100), then combined 40% Hardpoint, 35% S&amp;D, 25% Control (re-weighted across the modes a player has played). Roster Readiness = 50% quantitative + 50% coach ratings (1-5 converted to 100). An asterisk (*) means provisional until all three coach ratings are in. Pool-based badges (Slayer, S&amp;D, Low Impact) switch on at 5+ players; you have ${A.length}. Highlighted rows are the top player in a role.`;
+  cLists();
+}
+function cOpen(id){
+  const x=analyze().A.find(z=>z.p.id===id);if(!x)return;openId=id;
+  const{p,a}=x,q=p.qual||{},s=n=>n===1?'':'es';
+  const avgs=[['KD',a.kd.toFixed(2)],['KD Diff',a.diff.toFixed(1)],['APK',a.apk.toFixed(2)],['IKR',a.ikr.toFixed(2)],['HP Time',a.hpTime==null?'-':a.hpTime.toFixed(0)+'s'],['OBJ Eff.',a.obj==null?'-':a.obj.toFixed(2)]];
+  dr.innerHTML=`<div class="pn">
+   <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="margin:0;font-size:30px;color:var(--blue2)">${esc(p.name)}</h2><div class="mut">${esc(p.team)} · ${a.n} match${s(a.n)}</div><div>${a.badges.map(bd).join('')}</div></div><button class="btn2" data-close="1">✕</button></div>
+   <div class="g c3 sec"><div class="kv big"><span>Quantitative</span><b>${Math.round(a.quant)}/100</b></div><div class="kv big"><span>Qualitative</span><b>${a.rated?Math.round(a.qual)+'/100':'Pending'}</b></div><div class="kv big o"><span>Roster Readiness</span><b>${Math.round(a.ready)}${a.rated?'':'*'}</b></div></div>
+   <div class="sec"><h3 class="disp">Mode scores (vs pool best)</h3><div class="g c3">${KS.map(k=>`<div class="kv"><span>${MODES[k]} · ${a.cnt[k]} match${s(a.cnt[k])}</span><b>${a.c[k]==null?'-':Math.round(a.sc[k])+'/100'}</b></div>`).join('')}</div></div>
+   <div class="sec"><h3 class="disp">Averages</h3><div class="g c3">${avgs.map(([l,v])=>`<div class="kv"><span>${l}</span><b>${v}</b></div>`).join('')}</div></div>
+   <div class="sec"><h3 class="disp">Matches</h3><div class="tw"><table style="min-width:480px"><thead><tr><th>Mode</th><th>Dur</th><th>Score</th><th>K/D/A</th><th>Imp</th><th>Time</th><th>Comp</th><th></th></tr></thead><tbody>${p.matches.map((m,i)=>`<tr><td>${MODES[m.mode]}</td><td>${m.dur}${m.mode==='HP'?'m':' rd'}</td><td class="mono">${m.score}</td><td class="mono">${m.k}/${m.d}/${m.a}</td><td class="mono">${m.imp}</td><td class="mono">${m.mode==='HP'?m.time+'s':'-'}</td><td class="mono">${dm(m).comp.toFixed(1)}</td><td><button class="del" data-dm="${i}">Delete</button></td></tr>`).join('')}</tbody></table></div></div>
+   <div class="sec"><h3 class="disp">Coach evaluation (1-5)</h3>${QS.map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><select id="q_${k}"><option value="">Not rated yet</option>${[1,2,3,4,5].map(n=>`<option ${q[k]&&q[k].r===n?'selected':''}>${n}</option>`).join('')}</select><textarea id="c_${k}" rows="2" placeholder="Comments" style="margin-top:6px">${esc(q[k]?q[k].c:'')}</textarea></div>`).join('')}
+    <button class="go" style="margin-top:4px" data-save="1">💾 Save Evaluation</button></div>
+   <button class="del" style="margin-top:16px" data-dp="1">Delete player</button>
+  </div>`;
+  dr.classList.add('on');
+}
+function cClose(){dr.classList.remove('on');openId=null}
+dr.onclick=e=>{
+  const t=e.target;
+  if(t===dr||t.closest('[data-close]'))return cClose();
+  const m=t.closest('[data-dm]');
+  if(m){const p=cp.find(z=>z.id===openId);if(!p||!confirm('Delete this match?'))return;
+    p.matches.splice(+m.dataset.dm,1);const id=openId;
+    if(!p.matches.length){cp=cp.filter(z=>z.id!==id);cClose()}
+    cSave();if(cp.some(z=>z.id===id))cOpen(id);return}
+  if(t.closest('[data-save]')){const p=cp.find(z=>z.id===openId);if(!p)return;
+    p.qual={};QS.forEach(([k])=>{p.qual[k]={r:+$('q_'+k).value||0,c:$('c_'+k).value.trim()}});
+    const id=openId;cSave();cOpen(id);return}
+  if(t.closest('[data-dp]')&&confirm('Delete this player and all their matches?')){cp=cp.filter(z=>z.id!==openId);cClose();cSave()}
+};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cClose()});
+$('cTabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b){tab=b.dataset.t;cRender()}};
+$('cLb').onclick=e=>{const o=e.target.closest('[data-o]');if(o)cOpen(+o.dataset.o)};
+$('cTeam').addEventListener('input',cLists);
+const setMode=()=>{const h=$('cMode').value==='HP';$('cDurL').textContent=h?'Match Duration (minutes)':'Total Rounds';$('cTimeW').hidden=!h;$('cTime').required=h};
+$('cMode').onchange=setMode;setMode();
+$('cForm').onsubmit=e=>{
+  e.preventDefault();
+  const team=$('cTeam').value.trim(),name=$('cName').value.trim(),mode=$('cMode').value,n=id=>parseFloat($(id).value)||0;
+  const m={id:Date.now(),mode,dur:Math.max(n('cDur'),.1),score:n('cScore'),k:n('cK'),d:n('cD'),a:n('cA'),imp:n('cImp'),time:mode==='HP'?n('cTime'):0,ts:new Date().toLocaleString()};
+  const p=cp.find(z=>z.name.toLowerCase()===name.toLowerCase()&&z.team.toLowerCase()===team.toLowerCase());
+  if(p)p.matches.push(m);else cp.push({id:Date.now(),team,name,matches:[m],qual:{}});
+  ['cDur','cScore','cImp','cK','cD','cA','cTime','cName'].forEach(i=>$(i).value='');
+  cSave();$('cName').focus();
+};
+$('cExp').onclick=()=>saveFile('CODM_Tryouts.json',JSON.stringify(cp,null,2));
+$('cClr').onclick=()=>{if(confirm('Reset all CODM tryout data?')){cp=[];cClose();cSave()}};
+
+const PC=['#0b5cad','#FFC72C','#0d8a5e','#7c3fc4','#d6384a'];
+let cmp=new Set();const cm=document.createElement('div');cm.id='ccmp';document.body.appendChild(cm);
+function bars(title,sel,get,fmt,max){
+  const vals=sel.map(get),mx=max||Math.max(...vals.map(v=>v||0),.0001);
+  return `<div class="cg"><div class="cgt">${title}</div>${sel.map((x,i)=>{const v=vals[i];return `<div class="cr"><span class="cn">${esc(x.p.name)}</span><div class="cb"><i style="width:${v==null?0:Math.max(0,Math.min(100,v/mx*100))}%;background:${PC[i]}"></i></div><b class="mono">${v==null?'-':fmt(v)}</b></div>`}).join('')}</div>`;
+}
+window.cmpBars=bars;window.cmpPC=PC;
+function cmpRender(){
+  cmp=new Set([...cmp].filter(id=>cp.some(p=>p.id===id)));
+  const sy=cm.firstChild?cm.firstChild.scrollTop:0,{A}=analyze(),L=[...A].sort((m,n)=>n.a.ready-m.a.ready),sel=L.filter(x=>cmp.has(x.p.id)),full=cmp.size>=5;
+  let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${cmp.size} selected).</div><div class="chips">${L.map(x=>`<label class="chip ${cmp.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${cmp.has(x.p.id)?'checked':''} ${full&&!cmp.has(x.p.id)?'disabled':''}> ${esc(x.p.name)}</label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
+  if(sel.length<2)h+='<div class="empty">Select at least two players to compare.</div>';
+  else{
+    const r=v=>Math.round(v),f2=v=>v.toFixed(2),qv=k=>x=>(x.p.qual&&x.p.qual[k]&&x.p.qual[k].r)||null;
+    h+=`<div class="chips" style="margin-top:12px">${sel.map((x,i)=>`<span class="chip on" style="border-color:${PC[i]}"><i style="width:10px;height:10px;border-radius:50%;background:${PC[i]};display:inline-block"></i>${esc(x.p.name)}</span>`).join('')}</div>`;
+    h+=`<div class="cgs">${[
+      bars('Roster Readiness (0-100)',sel,x=>x.a.ready,r,100),
+      bars('Quantitative (0-100)',sel,x=>x.a.quant,r,100),
+      bars('Qualitative (0-100)',sel,x=>x.a.qual,r,100),
+      ...KS.map(k=>bars(MODES[k]+' score vs pool best',sel,x=>x.a.c[k]==null?null:x.a.sc[k],r,100)),
+      bars('KD ratio',sel,x=>x.a.kd,f2),bars('Assists per kill (APK)',sel,x=>x.a.apk,f2),bars('Impact-to-kill ratio (IKR)',sel,x=>x.a.ikr,f2),
+      ...QS.map(([k,l])=>bars(l+' (1-5)',sel,qv(k),v=>v+'/5',5))
+    ].join('')}</div>`;
+    h+=`<h3 class="disp" style="margin:18px 0 0;color:var(--goldink)">📝 Coach Notes</h3><div class="ncs">${sel.map((x,i)=>`<div class="nc" style="border-top:4px solid ${PC[i]}"><b>${esc(x.p.name)}</b> <span class="mut">${esc(x.p.team)} · Readiness ${r(x.a.ready)}${x.a.rated?'':'*'}</span><div>${x.a.badges.map(bd).join('')}</div>${QS.map(([k,l])=>{const q=(x.p.qual||{})[k];return `<div class="nq"><span>${l}</span><b>${q&&q.r?q.r+'/5':'Not rated'}</b><p>${q&&q.c?esc(q.c):'<i class="mut">No comments yet.</i>'}</p></div>`}).join('')}</div>`).join('')}</div>`;
+  }
+  cm.innerHTML=h+'</div>';cm.classList.add('on');if(cm.firstChild)cm.firstChild.scrollTop=sy;
+}
+cm.onclick=e=>{if(e.target===cm||e.target.closest('[data-x]'))cm.classList.remove('on')};
+cm.onchange=e=>{const c=e.target.closest('[data-c]');if(c){const id=+c.dataset.c;c.checked?cmp.add(id):cmp.delete(id);cmpRender()}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cm.classList.remove('on')});
+$('cCmp').onclick=cmpRender;
+
+const hd=document.querySelector('header h1'),hp=document.querySelector('header p'),hb=$('bImp').parentElement;
+function game(g){
+  const c=g==='C';
+  $('mlbb').hidden=c;$('codm').hidden=!c;hb.style.display=c?'none':'flex';
+  hd.textContent=c?'NU Bulldogs · CODM Varsity Tryouts':'NU Bulldogs · MLBB Varsity Tryouts';
+  hp.textContent=c?'Mode-based metrics, role badges and coach evaluation':'Multi-game averages, match history and team filters';
+  document.title=hd.textContent;
+  $('gM').classList.toggle('on',!c);$('gC').classList.toggle('on',c);
+}
+$('gM').onclick=()=>game('M');$('gC').onclick=()=>game('C');
+cRender();
+})();
+{
+const mm=document.createElement('div');mm.id='mcmp';document.body.appendChild(mm);
+let msel=new Set();
+const mRender=()=>{
+  const bars=window.cmpBars,PC=window.cmpPC;
+  msel=new Set([...msel].filter(id=>players.some(p=>p.id===id)));
+  const sy=mm.firstChild?mm.firstChild.scrollTop:0;
+  const L=players.map(p=>({p,s:score(p)})).sort((a,b)=>b.s.overall-a.s.overall),ch=L.filter(x=>msel.has(x.p.id)),full=msel.size>=5;
+  const r=v=>Math.round(v),f1=v=>v.toFixed(1),k=v=>(v/1000).toFixed(1)+'k',cv=key=>x=>x.p[key]==null?null:x.p[key],t10=v=>v.toFixed(1)+'/10';
+  let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${msel.size} selected). Stats shown are each player's averages.</div><div class="chips">${L.map(x=>`<label class="chip ${msel.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${msel.has(x.p.id)?'checked':''} ${full&&!msel.has(x.p.id)?'disabled':''}> ${esc(x.p.name)} <span class="mut">${esc(x.p.role)}</span></label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
+  if(ch.length<2)h+='<div class="empty">Select at least two players to compare.</div>';
+  else{
+    h+=`<div class="chips" style="margin-top:12px">${ch.map((x,i)=>`<span class="chip on" style="border-color:${PC[i]}"><i style="width:10px;height:10px;border-radius:50%;background:${PC[i]};display:inline-block"></i>${esc(x.p.name)}</span>`).join('')}</div>`;
+    h+=`<div class="cgs">${[
+      bars('Overall Index (0-100)',ch,x=>x.s.overall,r,100),
+      bars('Quantitative (0-100)',ch,x=>x.s.quant,r,100),
+      bars('Qualitative (0-100)',ch,x=>x.s.rated?x.s.qual:null,r,100),
+      bars('KDA ratio',ch,x=>+x.s.kda,f1),
+      bars('Teamfight participation %',ch,cv('tfPart'),f1,100),
+      bars('Hero damage',ch,cv('heroDmg'),k),bars('Turret damage',ch,cv('turretDmg'),k),bars('Damage taken',ch,cv('dmgTaken'),k),bars('Total gold',ch,cv('totalGold'),k),
+      bars('Communication (1-10)',ch,cv('comms'),t10,10),bars('Resilience (1-10)',ch,cv('resilience'),t10,10),bars('Hero pool (1-10)',ch,cv('versatility'),t10,10)
+    ].join('')}</div>`;
+    h+=`<h3 class="disp" style="margin:18px 0 0;color:var(--goldink)">📝 Coach Ratings</h3><div class="mut">Averaged across each player's rated matches.</div><div class="ncs">${ch.map((x,i)=>`<div class="nc" style="border-top:4px solid ${PC[i]}"><b>${esc(x.p.name)}</b> <span class="mut">${esc(x.p.teamName)} · ${esc(x.p.role)}</span><div class="mut">Overall ${x.s.overall}${x.s.rated?'':'*'} · ${x.p.gamesPlayed} game${x.p.gamesPlayed===1?'':'s'}</div>${[['comms','Communication'],['resilience','Resilience'],['versatility','Hero Pool']].map(([key,l])=>`<div class="nq"><span>${l}</span><b>${x.p[key]==null?'Not rated':x.p[key].toFixed(1)+'/10'}</b><p>${x.p.notes&&x.p.notes[key]?esc(x.p.notes[key]):'<i class="mut">No notes yet.</i>'}</p></div>`).join('')}</div>`).join('')}</div>`;
+  }
+  mm.innerHTML=h+'</div>';mm.classList.add('on');if(mm.firstChild)mm.firstChild.scrollTop=sy;
+};
+mm.onclick=e=>{if(e.target===mm||e.target.closest('[data-x]'))mm.classList.remove('on')};
+mm.onchange=e=>{const c=e.target.closest('[data-c]');if(c){const id=+c.dataset.c;c.checked?msel.add(id):msel.delete(id);mRender()}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')mm.classList.remove('on')});
+const bc=document.createElement('button');bc.className='btn2';bc.textContent='⚖️ Compare';bc.onclick=mRender;bp.before(bc);
+}
 </script>
 </body>
 </html>
