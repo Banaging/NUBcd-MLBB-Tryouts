@@ -166,14 +166,14 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
           <div><label>Team Name</label><input id="cTeam" required list="cTeams" autocomplete="off" placeholder="Pick or type a team"><datalist id="cTeams"></datalist></div>
           <div><label>Player Handle</label><input id="cName" required list="cNames" autocomplete="off" placeholder="Pick or type a player"><datalist id="cNames"></datalist></div>
           <div><label>Game Mode</label><select id="cMode"><option value="HP">Hardpoint</option><option value="SD">Search &amp; Destroy</option><option value="CTL">Control</option></select></div>
-          <div><label id="cDurL">Match Duration (minutes)</label><input type="number" id="cDur" required min="1" step="0.1"></div>
+          <div id="cDurW"><label id="cDurL">Total Rounds</label><input type="number" id="cDur" required min="1" step="1"></div>
           <div style="grid-column:1/-1"><label>Primary Role</label><select id="cRole"></select></div>
           <div style="grid-column:1/-1"><label>Also plays (other roles this player can cover)</label><div class="chips" id="cAlso"></div></div>
           <div style="grid-column:1/-1"><label>Match / Game ID (optional)</label><input id="cMatchNo" placeholder="e.g. Game 1 - use the same ID for every player in that game"></div>
         </div>
         <div class="sec"><h3 class="disp">⚔️ End-Game Stats</h3><div class="g c2">
           <div><label>Score</label><input type="number" id="cScore" required min="0"></div>
-          <div><label>Impact</label><input type="number" id="cImp" required min="0"></div>
+          <div><label>Impact</label><input type="number" id="cImpBtn" required min="0"></div>
           <div><label>Kills</label><input type="number" id="cK" required min="0"></div>
           <div><label>Deaths</label><input type="number" id="cD" required min="0"></div>
           <div><label>Assists</label><input type="number" id="cA" required min="0"></div>
@@ -549,7 +549,7 @@ const dr=document.createElement('div');dr.id='cdr';document.body.appendChild(dr)
 
 function dm(m){
   const KD=m.k/Math.max(m.d,1),DIFF=m.k-m.d,APK=m.a/Math.max(m.k,1),IKR=m.imp/Math.max(m.k,1),r={KD,DIFF,APK,IKR};
-  if(m.mode==='HP'){r.OBJ=m.time/Math.max(m.d,1);r.SPM=m.score/m.dur;r.comp=KD*25+(m.time/2)*.35+m.imp*.25+APK*15}
+  if(m.mode==='HP'){r.OBJ=m.time/Math.max(m.d,1);r.SPM=m.dur?m.score/m.dur:null;r.comp=KD*25+(m.time/2)*.35+m.imp*.25+APK*15}
   else if(m.mode==='SD'){r.KPR=m.k/m.dur;r.SPR=m.score/m.dur;r.comp=KD*30+r.SPR*.3+m.imp*.25+APK*15}
   else{r.SPR=m.score/m.dur;r.comp=DIFF*20+KD*20+r.SPR*.3+m.imp*.2+APK*10}
   return r;
@@ -559,7 +559,7 @@ function agg(p){
   KS.forEach(k=>{o.cnt[k]=by(k).length;o.c[k]=avg(by(k),x=>x.r.comp)});
   o.modes=KS.filter(k=>o.cnt[k]).length;
   o.kd=avg(L,x=>x.r.KD)||0;o.diff=avg(L,x=>x.r.DIFF)||0;o.apk=avg(L,x=>x.r.APK)||0;o.ikr=avg(L,x=>x.r.IKR)||0;
-  o.kills=avg(L,x=>x.m.k)||0;o.imp=avg(L,x=>x.m.imp)||0;o.deaths=avg(L,x=>x.m.d)||0;o.ast=avg(L,x=>x.m.a)||0;o.spx=avg(L,x=>x.m.score/x.m.dur)||0;
+  o.kills=avg(L,x=>x.m.k)||0;o.imp=avg(L,x=>x.m.imp)||0;o.deaths=avg(L,x=>x.m.d)||0;o.ast=avg(L,x=>x.m.a)||0;o.spx=avg(L,x=>x.m.dur?x.m.score/x.m.dur:0)||0;
   o.hpTime=avg(by('HP'),x=>x.m.time);o.obj=avg(by('HP'),x=>x.r.OBJ);o.sdIkr=avg(by('SD'),x=>x.r.IKR);
   return o;
 }
@@ -611,7 +611,7 @@ function cOpen(id){
    <div class="g c3 sec"><div class="kv big"><span>Quantitative</span><b>${Math.round(a.quant)}/100</b></div><div class="kv big"><span>Qualitative</span><b>${a.rated?Math.round(a.qual)+'/100':'Pending'}</b></div><div class="kv big o"><span>Roster Readiness</span><b>${Math.round(a.ready)}${a.rated?'':'*'}</b></div></div>
    <div class="sec"><h3 class="disp">Mode scores (vs pool best)</h3><div class="g c3">${KS.map(k=>`<div class="kv"><span>${MODES[k]} · ${a.cnt[k]} match${s(a.cnt[k])}</span><b>${a.c[k]==null?'-':Math.round(a.sc[k])+'/100'}</b></div>`).join('')}</div></div>
    <div class="sec"><h3 class="disp">Averages</h3><div class="g c3">${avgs.map(([l,v])=>`<div class="kv"><span>${l}</span><b>${v}</b></div>`).join('')}</div></div>
-   <div class="sec"><h3 class="disp">Matches</h3><div class="tw"><table style="min-width:480px"><thead><tr><th>Game</th><th>Mode</th><th>Dur</th><th>Score</th><th>K/D/A</th><th>Imp</th><th>Time</th><th>Comp</th><th></th></tr></thead><tbody>${p.matches.map((m,i)=>`<tr><td>${m.matchNo?esc(m.matchNo):'-'}</td><td>${MODES[m.mode]}</td><td>${m.dur}${m.mode==='HP'?'m':' rd'}</td><td class="mono">${m.score}</td><td class="mono">${m.k}/${m.d}/${m.a}</td><td class="mono">${m.imp}</td><td class="mono">${m.mode==='HP'?m.time+'s':'-'}</td><td class="mono">${dm(m).comp.toFixed(1)}</td><td style="white-space:nowrap"><button class="del" style="border-color:var(--blue2);color:var(--blue2);margin-right:4px" data-em="${i}">✏️ Edit</button><button class="del" data-dm="${i}">Delete</button></td></tr>`).join('')}</tbody></table></div></div>
+   <div class="sec"><h3 class="disp">Matches</h3><div class="tw"><table style="min-width:480px"><thead><tr><th>Game</th><th>Mode</th><th>Dur</th><th>Score</th><th>K/D/A</th><th>Imp</th><th>Time</th><th>Comp</th><th></th></tr></thead><tbody>${p.matches.map((m,i)=>`<tr><td>${m.matchNo?esc(m.matchNo):'-'}</td><td>${MODES[m.mode]}</td><td>${m.mode==='HP'?'-':m.dur+' rd'}</td><td class="mono">${m.score}</td><td class="mono">${m.k}/${m.d}/${m.a}</td><td class="mono">${m.imp}</td><td class="mono">${m.mode==='HP'?m.time+'s':'-'}</td><td class="mono">${dm(m).comp.toFixed(1)}</td><td style="white-space:nowrap"><button class="del" style="border-color:var(--blue2);color:var(--blue2);margin-right:4px" data-em="${i}">✏️ Edit</button><button class="del" data-dm="${i}">Delete</button></td></tr>`).join('')}</tbody></table></div></div>
    <div class="sec"><h3 class="disp">Coach evaluation (1-5)</h3>${QS.map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><select id="q_${k}"><option value="">Not rated yet</option>${[1,2,3,4,5].map(n=>`<option ${q[k]&&q[k].r===n?'selected':''}>${n}</option>`).join('')}</select><textarea id="c_${k}" rows="2" placeholder="Comments" style="margin-top:6px">${esc(q[k]?q[k].c:'')}</textarea></div>`).join('')}
     <button class="go" style="margin-top:4px" data-save="1">💾 Save Evaluation</button></div>
    
@@ -637,7 +637,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')cClose()});
 $('cTabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b){tab=b.dataset.t;cRender()}};
 $('cLb').onclick=e=>{const o=e.target.closest('[data-o]');if(o)cOpen(+o.dataset.o);const d=e.target.closest('[data-dp2]');if(d&&confirm('Delete this player and all their matches?')){cp=cp.filter(z=>z.id!==+d.dataset.dp2);if(cEdit)stopE();cSave()}};
 $('cTeam').addEventListener('input',cLists);
-const setMode=()=>{const h=$('cMode').value==='HP';$('cDurL').textContent=h?'Match Duration (minutes)':'Total Rounds';$('cTimeW').hidden=!h;$('cTime').required=h};
+const setMode=()=>{const h=$('cMode').value==='HP';$('cDurW').hidden=h;$('cDur').required=!h;$('cTimeW').hidden=!h;$('cTime').required=h};
 $('cMode').onchange=setMode;setMode();
 $('cCancel').onclick=()=>stopE();
 $('cRole').innerHTML=Object.keys(ROLES).map(k=>`<option value="${k}">${ROLES[k]}</option>`).join('');
@@ -659,14 +659,14 @@ function startE(pid,i){
   const p=cp.find(z=>z.id===pid),m=p&&p.matches[i];if(!m)return;
   $('cTeam').value=p.team;$('cName').value=p.name;if(p.role)$('cRole').value=p.role;setA(p);
   $('cMode').value=m.mode;setMode();
-  $('cDur').value=m.dur;$('cScore').value=m.score;$('cImp').value=m.imp;$('cK').value=m.k;$('cD').value=m.d;$('cA').value=m.a;$('cTime').value=m.mode==='HP'?m.time:'';$('cMatchNo').value=m.matchNo||'';
+  $('cDur').value=m.mode==='HP'?'':m.dur;$('cScore').value=m.score;$('cImp').value=m.imp;$('cK').value=m.k;$('cD').value=m.d;$('cA').value=m.a;$('cTime').value=m.mode==='HP'?m.time:'';$('cMatchNo').value=m.matchNo||'';
   cEdit={pid,i};$('cGo').textContent='💾 Update Match';$('cEditMsg').textContent='Editing match '+(i+1)+' of '+p.name;$('cEditBar').hidden=false;
   cClose();$('cForm').scrollIntoView({behavior:'smooth',block:'start'});
 }
 $('cForm').onsubmit=e=>{
   e.preventDefault();
   const team=$('cTeam').value.trim(),name=$('cName').value.trim(),mode=$('cMode').value,n=id=>parseFloat($(id).value)||0;
-  const m={id:Date.now(),mode,dur:Math.max(n('cDur'),.1),score:n('cScore'),k:n('cK'),d:n('cD'),a:n('cA'),imp:n('cImp'),time:mode==='HP'?n('cTime'):0,ts:new Date().toLocaleString(),matchNo:$('cMatchNo').value.trim()};
+  const m={id:Date.now(),mode,dur:mode==='HP'?0:Math.max(n('cDur'),1),score:n('cScore'),k:n('cK'),d:n('cD'),a:n('cA'),imp:n('cImp'),time:mode==='HP'?n('cTime'):0,ts:new Date().toLocaleString(),matchNo:$('cMatchNo').value.trim()};
   const p=cp.find(z=>z.name.toLowerCase()===name.toLowerCase()&&z.team.toLowerCase()===team.toLowerCase());
   const role=$('cRole').value,also=[...document.querySelectorAll('#cAlso input:checked')].map(i=>i.value).filter(r=>r!==role);
   if(cEdit){
