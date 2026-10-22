@@ -93,9 +93,9 @@ tbody tr:hover td{background:rgba(11,92,173,.07)}
 .ncs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px}
 .nc{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--field)}
 .nq{margin-top:8px;font-size:12px}.nq span{color:var(--mut);display:block}.nq p{margin:2px 0 0;white-space:pre-wrap}
-#cdr{position:fixed;inset:0;background:rgba(0,20,45,.7);backdrop-filter:blur(3px);z-index:60;display:none;justify-content:flex-end}
+#cdr{position:fixed;inset:0;background:rgba(0,20,45,.7);backdrop-filter:blur(3px);z-index:60;display:none;align-items:center;justify-content:center;padding:16px}
 #cdr.on{display:flex}
-#cdr .pn{background:var(--card);width:min(620px,100%);height:100%;overflow-y:auto;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px));border-left:6px solid var(--gold)}
+#cdr .pn{background:var(--card);width:min(760px,100%);max-height:90vh;overflow-y:auto;padding:16px;border:1px solid var(--line);border-top:6px solid var(--gold);border-radius:18px}
 textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font:inherit;resize:vertical}
 @media(min-width:640px){.c4{grid-template-columns:repeat(4,1fr)}}
 </style>
@@ -126,6 +126,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
           <div><label>Primary Role</label><select id="role">
             <option>Roamer</option><option>Jungler</option><option>Mid Laner</option><option>Gold Laner</option><option>EXP Laner</option></select></div>
           
+          <div style="grid-column:1/-1"><label>Also plays (other roles this player can cover)</label><div class="chips" id="alsoBox"></div></div>
           <div style="grid-column:1/-1"><label>Match / Game ID (optional)</label><input id="matchNo" placeholder="e.g. Game 1 - use the same ID for every player in that game"></div>
           <div id="exHint" class="mut" hidden style="grid-column:1/-1;color:var(--goldink);font-weight:600"></div>
         </div>
@@ -167,6 +168,8 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
           <div><label>Game Mode</label><select id="cMode"><option value="HP">Hardpoint</option><option value="SD">Search &amp; Destroy</option><option value="CTL">Control</option></select></div>
           <div><label id="cDurL">Match Duration (minutes)</label><input type="number" id="cDur" required min="1" step="0.1"></div>
           <div style="grid-column:1/-1"><label>Primary Role</label><select id="cRole"></select></div>
+          <div style="grid-column:1/-1"><label>Also plays (other roles this player can cover)</label><div class="chips" id="cAlso"></div></div>
+          <div style="grid-column:1/-1"><label>Match / Game ID (optional)</label><input id="cMatchNo" placeholder="e.g. Game 1 - use the same ID for every player in that game"></div>
         </div>
         <div class="sec"><h3 class="disp">⚔️ End-Game Stats</h3><div class="g c2">
           <div><label>Score</label><input type="number" id="cScore" required min="0"></div>
@@ -176,15 +179,16 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
           <div><label>Assists</label><input type="number" id="cA" required min="0"></div>
           <div id="cTimeW"><label>Hardpoint Time (seconds)</label><input type="number" id="cTime" min="0"></div>
         </div></div>
-        <button class="go" type="submit">➕ Save Match</button>
+        <div id="cEditBar" hidden style="margin-top:12px;padding:10px;border-radius:10px;background:var(--goldbg);border:1px solid var(--gold)"><b id="cEditMsg"></b><br><button type="button" class="del" id="cCancel" style="margin-top:8px">Cancel edit</button></div>
+        <button class="go" id="cGo" type="submit">➕ Save Match</button>
       </form>
     </section>
     <section>
       <div class="card">
         <div class="t"><div><h2>🏆 CODM Leaderboard</h2><div class="mut">Click a name for the coach evaluation panel.</div></div>
-          <div style="display:flex;gap:8px"><button class="btn2" id="cCmp">⚖️ Compare</button><button class="btn2" id="cExp">📥 Export JSON</button><button class="btn2" id="cClr">🗑️ Reset</button></div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="file" id="cImpF" accept=".json" hidden><button class="btn2" id="cImp">📤 Import JSON</button><button class="btn2" id="cCmp">⚖️ Compare</button><button class="btn2" id="cExp">📥 Export JSON</button><button class="btn2" id="cClr">🗑️ Reset</button></div></div>
         <div class="tabs" id="cTabs"></div>
-        <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>HP/SD/CTL</th><th>KD</th><th>APK</th><th>IKR</th><th>Quant</th><th>Qual</th><th>Readiness</th></tr></thead><tbody id="cLb"></tbody></table></div>
+        <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>HP/SD/CTL</th><th>KD</th><th>APK</th><th>IKR</th><th>Quant</th><th>Qual</th><th>Readiness</th><th></th></tr></thead><tbody id="cLb"></tbody></table></div>
       </div>
       <div class="legend" id="cLeg"></div>
     </section>
@@ -249,7 +253,7 @@ function save(){
 }
 $('form').onsubmit=e=>{
   e.preventDefault();
-  const teamName=$('teamName').value.trim(),name=$('name').value.trim(),role=$('role').value;
+  const teamName=$('teamName').value.trim(),name=$('name').value.trim(),role=$('role').value,also=[...document.querySelectorAll('#alsoBox input:checked')].map(i=>i.value).filter(r=>r!==$('role').value);
   const m={matchId:Date.now(),timestamp:new Date().toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})};
   KEYS.forEach(k=>{const v=parseFloat($(k).value);m[k]=isNaN(v)?null:v});m.matchNo=$('matchNo').value.trim();
   if(editing){
@@ -258,13 +262,13 @@ $('form').onsubmit=e=>{
       const old=p.matchHistory[editing.i];m.matchId=old.matchId;m.timestamp=old.timestamp;
       p.matchHistory[editing.i]=m;
       if($('applyAll').checked)p.matchHistory.forEach(x=>{x.comms=m.comms;x.resilience=m.resilience;x.versatility=m.versatility});
-      Object.assign(p,{teamName,name,role});recalc(p);
+      Object.assign(p,{teamName,name,role,alsoRoles:also});recalc(p);
     }
     stopEdit();save();return;
   }
   const ex=players.find(p=>p.name.toLowerCase()===name.toLowerCase()&&p.teamName.toLowerCase()===teamName.toLowerCase());
-  if(ex){(ex.matchHistory=ex.matchHistory||[]).push(m);ex.role=role;recalc(ex)}
-  else players.push({id:Date.now(),teamName,name,role,gamesPlayed:1,matchHistory:[m],...m});
+  if(ex){(ex.matchHistory=ex.matchHistory||[]).push(m);ex.role=role;ex.alsoRoles=also;recalc(ex)}
+  else players.push({id:Date.now(),teamName,name,role,alsoRoles:also,gamesPlayed:1,matchHistory:[m],...m});
   save();
   KEYS.forEach(k=>$(k).value='');$('name').value='';exHint();$('name').focus();
 };
@@ -277,7 +281,7 @@ function render(){
   const tops={};
   players.forEach(p=>{const s=sc.get(p.id).overall;if(!tops[p.role]||s>tops[p.role].s)tops[p.role]={id:p.id,s}});
   const topIds=Object.values(tops).map(t=>t.id);
-  const list=players.filter(p=>(rf==='ALL'||p.role===rf)&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
+  const list=players.filter(p=>(rf==='ALL'||p.role===rf||(p.alsoRoles||[]).includes(rf))&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
   const gset=new Set();G.forEach(p=>(p.matchHistory||[]).forEach((m,i)=>gset.add(m.matchNo?'L:'+m.matchNo.toLowerCase():'T:'+p.teamName.toLowerCase()+'#'+i)));const games=gset.size;
   const tm=new Map();G.forEach(p=>(p.matchHistory||[]).forEach((m,i)=>{const k=mKey(p,m,i);if(m.matchTime&&!tm.has(k))tm.set(k,m.matchTime)}));
   const tv=[...tm.values()],avgT=tv.length?tv.reduce((a,b)=>a+b,0)/tv.length:null;
@@ -288,7 +292,7 @@ function render(){
     const s=sc.get(p.id),top=topIds.includes(p.id);
     return `<tr class="${top?'top':''}"><td class="rank">${['🥇','🥈','🥉'][i]||i+1}</td>
     <td><button class="link" data-id="${p.id}">${esc(p.name)}</button>${top?`<span class="badge">Top ${esc(p.role)}</span>`:''}</td>
-    <td><span class="pill">${esc(p.teamName)}</span></td><td>${esc(p.role)}</td><td><b>${p.gamesPlayed}</b></td>
+    <td><span class="pill">${esc(p.teamName)}</span></td><td>${roleCell(p)}</td><td><b>${p.gamesPlayed}</b></td>
     <td class="mono">${p.kills.toFixed(1)}/${p.deaths.toFixed(1)}/${p.assists.toFixed(1)} <span class="mut">(${s.kda})</span></td>
     
     <td class="mono" style="color:var(--blue2)">${s.quant}</td><td class="mono">${s.rated?s.qual:'<span class="pill">Pending</span>'}</td>
@@ -311,7 +315,7 @@ function openModal(id){
   $('mGames').textContent=p.gamesPlayed;
   $('mHc').textContent=(p.matchHistory||[]).length;
   $('mQ').textContent=s.quant+'/100';$('mL').textContent=s.rated?s.qual+'/100':'Pending';$('mO').textContent=s.overall+'/100'+(s.rated?'':' *');
-  $('mAvg').innerHTML=`<div class="sec"><h3 class="disp">KDA Ratio</h3><div class="kv"><b style="color:var(--ok)">${s.kda}</b></div></div>`+
+  $('mAvg').innerHTML=roleEditor(p)+`<div class="sec"><h3 class="disp">KDA Ratio</h3><div class="kv"><b style="color:var(--ok)">${s.kda}</b></div></div>`+
     GROUPS.map(([t,c,fs])=>`<div class="sec"><h3 class="disp">${t.replace('(1–10)','')} averages</h3><div class="g ${c}">${fs.map(f=>`<div class="kv"><span>${f.l}</span><b>${fmt(f,p[f.k])}</b></div>`).join('')}</div></div>`).join('')+notesHtml(p);
   const h=p.matchHistory||[];
   $('p2').innerHTML=h.length?h.map((m,i)=>{
@@ -328,7 +332,7 @@ function stopEdit(){editing=null;$('form').reset();$('goBtn').textContent='➕ S
 function startEdit(pid,i){
   const p=players.find(x=>x.id===pid),m=p&&(p.matchHistory||[])[i];if(!m)return;
   $('teamName').value=p.teamName;$('name').value=p.name;$('role').value=p.role;
-  KEYS.forEach(k=>$(k).value=m[k]==null?'':m[k]);$('matchNo').value=m.matchNo||'';
+  KEYS.forEach(k=>$(k).value=m[k]==null?'':m[k]);$('matchNo').value=m.matchNo||'';setAlso(p);
   editing={pid,i};$('applyAll').checked=false;
   $('goBtn').textContent='💾 Update Match';$('editMsg').textContent='Editing Game '+(i+1)+' of '+p.name;$('editBar').hidden=false;
   close();$('form').scrollIntoView({behavior:'smooth',block:'start'});
@@ -379,7 +383,7 @@ function autofill(){
   if(editing)return;
   const t=$('teamName').value.trim().toLowerCase(),n=$('name').value.trim().toLowerCase();
   const p=players.find(x=>x.name.toLowerCase()===n&&(!t||x.teamName.toLowerCase()===t));
-  if(p){if(!t)$('teamName').value=p.teamName;$('role').value=p.role}
+  if(p){if(!t)$('teamName').value=p.teamName;$('role').value=p.role;setAlso(p)}
   exHint();
 }
 $('teamName').addEventListener('input',()=>{fillLists();autofill()});
@@ -412,6 +416,20 @@ function matchDetail(list){
     :'<tr><td colspan="14" class="empty">No players match the selected filters for this match.</td></tr>';
 }
 let curId=null;
+const MROLES=['Roamer','Jungler','Mid Laner','Gold Laner','EXP Laner'];
+$('alsoBox').innerHTML=MROLES.map(r=>`<label class="chip"><input type="checkbox" value="${r}"> ${r}</label>`).join('');
+const syncAlso=()=>{const pr=$('role').value;document.querySelectorAll('#alsoBox input').forEach(cb=>{if(cb.value===pr)cb.checked=false;cb.disabled=cb.value===pr})};
+const setAlso=p=>{document.querySelectorAll('#alsoBox input').forEach(cb=>cb.checked=(p.alsoRoles||[]).includes(cb.value));syncAlso()};
+$('role').addEventListener('change',syncAlso);syncAlso();
+const roleCell=p=>esc(p.role)+(p.alsoRoles||[]).map(r=>`<span class="pill" style="margin-left:4px;font-size:10px">+ ${esc(r)}</span>`).join('')+((p.alsoRoles||[]).length?'<span class="badge">FLEX</span>':'');
+const roleEditor=p=>`<div class="sec"><h3 class="disp">Roles</h3><label>Primary Role</label><select id="mRoleSel">${MROLES.map(r=>`<option ${r===p.role?'selected':''}>${r}</option>`).join('')}</select><label style="margin-top:8px">Also plays</label><div class="chips">${MROLES.filter(r=>r!==p.role).map(r=>{const on=(p.alsoRoles||[]).includes(r);return `<label class="chip ${on?'on':''}"><input type="checkbox" data-ar="${r}" ${on?'checked':''}> ${r}</label>`}).join('')}</div></div>`;
+$('mAvg').onchange=e=>{
+  const p=players.find(x=>x.id===curId),t=e.target;if(!p)return;
+  if(t.id==='mRoleSel'){p.role=t.value;p.alsoRoles=(p.alsoRoles||[]).filter(r=>r!==p.role)}
+  else if(t.dataset.ar){const s=new Set(p.alsoRoles||[]);t.checked?s.add(t.dataset.ar):s.delete(t.dataset.ar);p.alsoRoles=[...s]}
+  else return;
+  save();openModal(p.id);
+};
 const NOTE_KEYS=[['comms','Communication'],['resilience','Resilience / Tilt Control'],['versatility','Hero Pool']];
 const notesHtml=p=>{const n=p.notes||{};return `<div class="sec"><h3 class="disp">📝 Coach Notes</h3>${NOTE_KEYS.map(([k,l])=>`<div style="margin-bottom:8px"><label>${l}</label><textarea id="n_${k}" rows="2" placeholder="Observations and comments">${esc(n[k]||'')}</textarea></div>`).join('')}<button class="go" style="margin-top:4px" id="nSave">💾 Save Notes</button></div>`};
 $('mAvg').onclick=e=>{
@@ -444,14 +462,14 @@ function pdfBoard(){
   const sc=new Map(players.map(p=>[p.id,score(p)]));
   const tops={};players.forEach(p=>{const s=sc.get(p.id).overall;if(!tops[p.role]||s>tops[p.role].s)tops[p.role]={id:p.id,s}});
   const topIds=Object.values(tops).map(t=>t.id);
-  const list=players.filter(p=>(rf==='ALL'||p.role===rf)&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
+  const list=players.filter(p=>(rf==='ALL'||p.role===rf||(p.alsoRoles||[]).includes(rf))&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
   if(!list.length)return alert('No players to export.');
   const doc=newPdf('NU Bulldogs - MLBB Tryout Leaderboard',($('matchFilter').value==='ALL'?'':'Match: '+$('matchFilter').selectedOptions[0].textContent+'   |   ')+'Team: '+(tf==='ALL'?'All':tf)+'   |   Role: '+(rf==='ALL'?'All':rf)+'   |   '+list.length+' player'+(list.length===1?'':'s'),'l');
   if(!doc)return;
   doc.autoTable({startY:92,theme:'grid',styles:{fontSize:8,cellPadding:4,lineColor:[219,226,240]},
     headStyles:{fillColor:BLUE,textColor:255},alternateRowStyles:{fillColor:ZEBRA},
     head:[['#','Player','Team','Role','GP','K/D/A','TF %','Hero Dmg','Turret','Dmg Taken','Gold','Time','Quant','Qual','Overall']],
-    body:list.map((p,i)=>{const s=sc.get(p.id);return [i+1,p.name+(topIds.includes(p.id)?' [TOP]':''),p.teamName,p.role,p.gamesPlayed,nf(p.kills,1)+'/'+nf(p.deaths,1)+'/'+nf(p.assists,1),nf(p.tfPart,1),nf(p.heroDmg),nf(p.turretDmg),nf(p.dmgTaken),nf(p.totalGold),p.matchTime?nf(p.matchTime,1):'-',s.quant,s.rated?s.qual:'Pending',s.overall+(s.rated?'':'*')]}),
+    body:list.map((p,i)=>{const s=sc.get(p.id);return [i+1,p.name+(topIds.includes(p.id)?' [TOP]':''),p.teamName,p.role+((p.alsoRoles||[]).length?' (+'+p.alsoRoles.join(', ')+')':''),p.gamesPlayed,nf(p.kills,1)+'/'+nf(p.deaths,1)+'/'+nf(p.assists,1),nf(p.tfPart,1),nf(p.heroDmg),nf(p.turretDmg),nf(p.dmgTaken),nf(p.totalGold),p.matchTime?nf(p.matchTime,1):'-',s.quant,s.rated?s.qual:'Pending',s.overall+(s.rated?'':'*')]}),
     didParseCell:d=>{if(d.section==='body'&&topIds.includes(list[d.row.index].id))d.cell.styles.fillColor=HILITE}});
   const y=doc.lastAutoTable.finalY+14;
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);
@@ -520,7 +538,7 @@ const TABS=[['ALL','All Players'],['slayer','Slayers'],['anchor','Anchors'],['ob
 const BD={anchor:['a','🛡️ Anchor'],slayer:['s','⚔️ Slayer'],entry:['p','💥 Entry'],obj:['f','📍 Objective'],support:['c','🤝 Supporter / Assist'],flag:['w','⚠️ Low Impact Fragger']};
 const ROLES={slayer:'Slayer',anchor:'Anchor',obj:'Objective',entry:'Entry',support:'Supporter / Assist'};
 const roleOpts=sel=>'<option value="">Unassigned</option>'+Object.keys(ROLES).map(k=>`<option value="${k}" ${k===sel?'selected':''}>${ROLES[k]}</option>`).join('');
-const roleTag=p=>p.role&&BD[p.role]?bd(p.role):'<span class="mut">Unassigned</span> ';
+const roleTag=p=>(p.role&&BD[p.role]?bd(p.role):'<span class="mut">Unassigned</span> ')+(p.alsoRoles||[]).filter(r=>ROLES[r]).map(r=>`<span class="pill" style="margin:0 3px 0 0;font-size:10px">+ ${ROLES[r]}</span>`).join('')+((p.alsoRoles||[]).length?'<span class="badge" style="margin:0 3px">FLEX</span>':'');
 const QS=[['comms','Communication & Callouts'],['coach','Coachability & Composure'],['syn','Team Synergy / Adaptability']];
 let cp=[],tab='ALL',openId=null;
 try{cp=JSON.parse(localStorage.getItem(CK))||[]}catch(e){cp=[]}
@@ -573,13 +591,13 @@ function cLists(){
   $('cNames').innerHTML=names.map(x=>`<option value="${esc(x)}">`).join('');
 }
 function cRender(){
-  const{A,top}=analyze(),list=A.filter(x=>tab==='ALL'||x.p.role===tab).sort((m,n)=>n.a.ready-m.a.ready),bestR=[...A].sort((m,n)=>n.a.ready-m.a.ready)[0];
-  $('cStats').innerHTML=[[A.length,'Candidates'],[A.reduce((s,x)=>s+x.a.n,0),'Matches Logged'],[bestR?esc(bestR.p.name)+' · '+Math.round(bestR.a.ready):'—','Top Readiness']].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+  const{A,top}=analyze(),list=A.filter(x=>tab==='ALL'||x.p.role===tab||(x.p.alsoRoles||[]).includes(tab)).sort((m,n)=>n.a.ready-m.a.ready),bestR=[...A].sort((m,n)=>n.a.ready-m.a.ready)[0];
+  $('cStats').innerHTML=[[A.length,'Candidates'],[(()=>{const g=new Set();cp.forEach(p=>p.matches.forEach((m,i)=>g.add(m.matchNo?'L:'+m.matchNo.toLowerCase():'T:'+p.team.toLowerCase()+'#'+i)));return g.size})(),'Matches Logged'],[bestR?esc(bestR.p.name)+' · '+Math.round(bestR.a.ready):'—','Top Readiness']].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
   $('cTabs').innerHTML=TABS.map(([k,l])=>`<button class="tab ${k===tab?'on':''}" data-t="${k}">${l}</button>`).join('');
   $('cLb').innerHTML=list.length?list.map((x,i)=>{
     const{p,a}=x,t=top[p.id];
-    return `<tr class="${t?'top':''}"><td class="rank">${i+1}</td><td><button class="link" data-o="${p.id}">${esc(p.name)}</button>${t?t.map(r=>`<span class="badge">TOP ${r.toUpperCase()}</span>`).join(''):''}</td><td><span class="pill">${esc(p.team)}</span></td><td>${roleTag(p)}${a.badges.map(bd).join('')}</td><td class="mono">${a.cnt.HP}/${a.cnt.SD}/${a.cnt.CTL}</td><td class="mono">${a.kd.toFixed(2)}</td><td class="mono">${a.apk.toFixed(2)}</td><td class="mono">${a.ikr.toFixed(2)}</td><td class="mono" style="color:var(--blue2)">${Math.round(a.quant)}</td><td class="mono">${a.rated?Math.round(a.qual):'<span class="pill">Pending</span>'}</td><td style="min-width:90px"><b class="mono" style="color:var(--goldink);font-size:15px">${Math.round(a.ready)}${a.rated?'':'*'}</b><div class="bar"><i style="width:${a.ready}%"></i></div></td></tr>`}).join('')
-    :'<tr><td colspan="11" class="empty">No players here yet. Add a match to get started.</td></tr>';
+    return `<tr class="${t?'top':''}"><td class="rank">${i+1}</td><td><button class="link" data-o="${p.id}">${esc(p.name)}</button>${t?t.map(r=>`<span class="badge">TOP ${r.toUpperCase()}</span>`).join(''):''}</td><td><span class="pill">${esc(p.team)}</span></td><td>${roleTag(p)}${a.badges.map(bd).join('')}</td><td class="mono">${a.cnt.HP}/${a.cnt.SD}/${a.cnt.CTL}</td><td class="mono">${a.kd.toFixed(2)}</td><td class="mono">${a.apk.toFixed(2)}</td><td class="mono">${a.ikr.toFixed(2)}</td><td class="mono" style="color:var(--blue2)">${Math.round(a.quant)}</td><td class="mono">${a.rated?Math.round(a.qual):'<span class="pill">Pending</span>'}</td><td style="min-width:90px"><b class="mono" style="color:var(--goldink);font-size:15px">${Math.round(a.ready)}${a.rated?'':'*'}</b><div class="bar"><i style="width:${a.ready}%"></i></div></td><td><button class="del" data-dp2="${p.id}">Delete</button></td></tr>`}).join('')
+    :'<tr><td colspan="12" class="empty">No players here yet. Add a match to get started.</td></tr>';
   $('cLeg').innerHTML=`<b>Scoring:</b> each mode's composite is scaled against the best player in your current pool (best = 100), then combined 40% Hardpoint, 35% S&amp;D, 25% Control (re-weighted across the modes a player has played). Roster Readiness = 50% quantitative + 50% coach ratings (1-5 converted to 100). An asterisk (*) means provisional until all three coach ratings are in. Roles are set by the coach (in the entry form or the player panel). The Low Impact Fragger warning compares players against the pool and switches on at 5+ players; you have ${A.length}. Highlighted rows are the top player in a role.`;
   cLists();
 }
@@ -589,14 +607,14 @@ function cOpen(id){
   const avgs=[['KD',a.kd.toFixed(2)],['KD Diff',a.diff.toFixed(1)],['APK',a.apk.toFixed(2)],['IKR',a.ikr.toFixed(2)],['HP Time',a.hpTime==null?'-':a.hpTime.toFixed(0)+'s'],['OBJ Eff.',a.obj==null?'-':a.obj.toFixed(2)]];
   dr.innerHTML=`<div class="pn">
    <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="margin:0;font-size:30px;color:var(--blue2)">${esc(p.name)}</h2><div class="mut">${esc(p.team)} · ${a.n} match${s(a.n)}</div><div>${roleTag(p)}${a.badges.map(bd).join('')}</div></div><button class="btn2" data-close="1">✕</button></div>
-   <div class="sec"><label>Primary Role</label><select id="dRole">${roleOpts(p.role)}</select></div>
+   <div class="sec"><label>Primary Role</label><select id="dRole">${roleOpts(p.role)}</select><label style="margin-top:8px">Also plays</label><div class="chips">${Object.keys(ROLES).filter(k=>k!==p.role).map(k=>{const on=(p.alsoRoles||[]).includes(k);return `<label class="chip ${on?'on':''}"><input type="checkbox" data-ar="${k}" ${on?'checked':''}> ${ROLES[k]}</label>`}).join('')}</div></div>
    <div class="g c3 sec"><div class="kv big"><span>Quantitative</span><b>${Math.round(a.quant)}/100</b></div><div class="kv big"><span>Qualitative</span><b>${a.rated?Math.round(a.qual)+'/100':'Pending'}</b></div><div class="kv big o"><span>Roster Readiness</span><b>${Math.round(a.ready)}${a.rated?'':'*'}</b></div></div>
    <div class="sec"><h3 class="disp">Mode scores (vs pool best)</h3><div class="g c3">${KS.map(k=>`<div class="kv"><span>${MODES[k]} · ${a.cnt[k]} match${s(a.cnt[k])}</span><b>${a.c[k]==null?'-':Math.round(a.sc[k])+'/100'}</b></div>`).join('')}</div></div>
    <div class="sec"><h3 class="disp">Averages</h3><div class="g c3">${avgs.map(([l,v])=>`<div class="kv"><span>${l}</span><b>${v}</b></div>`).join('')}</div></div>
-   <div class="sec"><h3 class="disp">Matches</h3><div class="tw"><table style="min-width:480px"><thead><tr><th>Mode</th><th>Dur</th><th>Score</th><th>K/D/A</th><th>Imp</th><th>Time</th><th>Comp</th><th></th></tr></thead><tbody>${p.matches.map((m,i)=>`<tr><td>${MODES[m.mode]}</td><td>${m.dur}${m.mode==='HP'?'m':' rd'}</td><td class="mono">${m.score}</td><td class="mono">${m.k}/${m.d}/${m.a}</td><td class="mono">${m.imp}</td><td class="mono">${m.mode==='HP'?m.time+'s':'-'}</td><td class="mono">${dm(m).comp.toFixed(1)}</td><td><button class="del" data-dm="${i}">Delete</button></td></tr>`).join('')}</tbody></table></div></div>
+   <div class="sec"><h3 class="disp">Matches</h3><div class="tw"><table style="min-width:480px"><thead><tr><th>Game</th><th>Mode</th><th>Dur</th><th>Score</th><th>K/D/A</th><th>Imp</th><th>Time</th><th>Comp</th><th></th></tr></thead><tbody>${p.matches.map((m,i)=>`<tr><td>${m.matchNo?esc(m.matchNo):'-'}</td><td>${MODES[m.mode]}</td><td>${m.dur}${m.mode==='HP'?'m':' rd'}</td><td class="mono">${m.score}</td><td class="mono">${m.k}/${m.d}/${m.a}</td><td class="mono">${m.imp}</td><td class="mono">${m.mode==='HP'?m.time+'s':'-'}</td><td class="mono">${dm(m).comp.toFixed(1)}</td><td style="white-space:nowrap"><button class="del" style="border-color:var(--blue2);color:var(--blue2);margin-right:4px" data-em="${i}">✏️ Edit</button><button class="del" data-dm="${i}">Delete</button></td></tr>`).join('')}</tbody></table></div></div>
    <div class="sec"><h3 class="disp">Coach evaluation (1-5)</h3>${QS.map(([k,l])=>`<div style="margin-bottom:10px"><label>${l}</label><select id="q_${k}"><option value="">Not rated yet</option>${[1,2,3,4,5].map(n=>`<option ${q[k]&&q[k].r===n?'selected':''}>${n}</option>`).join('')}</select><textarea id="c_${k}" rows="2" placeholder="Comments" style="margin-top:6px">${esc(q[k]?q[k].c:'')}</textarea></div>`).join('')}
     <button class="go" style="margin-top:4px" data-save="1">💾 Save Evaluation</button></div>
-   <button class="del" style="margin-top:16px" data-dp="1">Delete player</button>
+   
   </div>`;
   dr.classList.add('on');
 }
@@ -604,9 +622,10 @@ function cClose(){dr.classList.remove('on');openId=null}
 dr.onclick=e=>{
   const t=e.target;
   if(t===dr||t.closest('[data-close]'))return cClose();
+  const em=t.closest('[data-em]');if(em)return startE(openId,+em.dataset.em);
   const m=t.closest('[data-dm]');
   if(m){const p=cp.find(z=>z.id===openId);if(!p||!confirm('Delete this match?'))return;
-    p.matches.splice(+m.dataset.dm,1);const id=openId;
+    if(cEdit)stopE();p.matches.splice(+m.dataset.dm,1);const id=openId;
     if(!p.matches.length){cp=cp.filter(z=>z.id!==id);cClose()}
     cSave();if(cp.some(z=>z.id===id))cOpen(id);return}
   if(t.closest('[data-save]')){const p=cp.find(z=>z.id===openId);if(!p)return;
@@ -616,23 +635,80 @@ dr.onclick=e=>{
 };
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cClose()});
 $('cTabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b){tab=b.dataset.t;cRender()}};
-$('cLb').onclick=e=>{const o=e.target.closest('[data-o]');if(o)cOpen(+o.dataset.o)};
+$('cLb').onclick=e=>{const o=e.target.closest('[data-o]');if(o)cOpen(+o.dataset.o);const d=e.target.closest('[data-dp2]');if(d&&confirm('Delete this player and all their matches?')){cp=cp.filter(z=>z.id!==+d.dataset.dp2);if(cEdit)stopE();cSave()}};
 $('cTeam').addEventListener('input',cLists);
 const setMode=()=>{const h=$('cMode').value==='HP';$('cDurL').textContent=h?'Match Duration (minutes)':'Total Rounds';$('cTimeW').hidden=!h;$('cTime').required=h};
 $('cMode').onchange=setMode;setMode();
+$('cCancel').onclick=()=>stopE();
 $('cRole').innerHTML=Object.keys(ROLES).map(k=>`<option value="${k}">${ROLES[k]}</option>`).join('');
-$('cName').addEventListener('input',()=>{const t=$('cTeam').value.trim().toLowerCase(),n=$('cName').value.trim().toLowerCase(),p=cp.find(z=>z.name.toLowerCase()===n&&(!t||z.team.toLowerCase()===t));if(p){if(!t)$('cTeam').value=p.team;if(p.role)$('cRole').value=p.role}});
-dr.onchange=e=>{if(e.target.id!=='dRole')return;const p=cp.find(z=>z.id===openId);if(p){p.role=e.target.value;const id=openId;cSave();cOpen(id)}};
+$('cAlso').innerHTML=Object.keys(ROLES).map(k=>`<label class="chip"><input type="checkbox" value="${k}"> ${ROLES[k]}</label>`).join('');
+const syncA=()=>{const pr=$('cRole').value;document.querySelectorAll('#cAlso input').forEach(cb=>{if(cb.value===pr)cb.checked=false;cb.disabled=cb.value===pr})};
+const setA=p=>{document.querySelectorAll('#cAlso input').forEach(cb=>cb.checked=(p.alsoRoles||[]).includes(cb.value));syncA()};
+$('cRole').addEventListener('change',syncA);syncA();
+$('cName').addEventListener('input',()=>{const t=$('cTeam').value.trim().toLowerCase(),n=$('cName').value.trim().toLowerCase(),p=cp.find(z=>z.name.toLowerCase()===n&&(!t||z.team.toLowerCase()===t));if(p){if(!t)$('cTeam').value=p.team;if(p.role)$('cRole').value=p.role;setA(p)}});
+dr.onchange=e=>{
+  const p=cp.find(z=>z.id===openId),t=e.target;if(!p)return;
+  if(t.id==='dRole'){p.role=t.value;p.alsoRoles=(p.alsoRoles||[]).filter(r=>r!==p.role)}
+  else if(t.dataset.ar){const s=new Set(p.alsoRoles||[]);t.checked?s.add(t.dataset.ar):s.delete(t.dataset.ar);p.alsoRoles=[...s]}
+  else return;
+  const id=openId;cSave();cOpen(id);
+};
+let cEdit=null;
+function stopE(){cEdit=null;['cDur','cScore','cImp','cK','cD','cA','cTime','cName','cMatchNo'].forEach(i=>$(i).value='');$('cGo').textContent='➕ Save Match';$('cEditBar').hidden=true}
+function startE(pid,i){
+  const p=cp.find(z=>z.id===pid),m=p&&p.matches[i];if(!m)return;
+  $('cTeam').value=p.team;$('cName').value=p.name;if(p.role)$('cRole').value=p.role;setA(p);
+  $('cMode').value=m.mode;setMode();
+  $('cDur').value=m.dur;$('cScore').value=m.score;$('cImp').value=m.imp;$('cK').value=m.k;$('cD').value=m.d;$('cA').value=m.a;$('cTime').value=m.mode==='HP'?m.time:'';$('cMatchNo').value=m.matchNo||'';
+  cEdit={pid,i};$('cGo').textContent='💾 Update Match';$('cEditMsg').textContent='Editing match '+(i+1)+' of '+p.name;$('cEditBar').hidden=false;
+  cClose();$('cForm').scrollIntoView({behavior:'smooth',block:'start'});
+}
 $('cForm').onsubmit=e=>{
   e.preventDefault();
   const team=$('cTeam').value.trim(),name=$('cName').value.trim(),mode=$('cMode').value,n=id=>parseFloat($(id).value)||0;
-  const m={id:Date.now(),mode,dur:Math.max(n('cDur'),.1),score:n('cScore'),k:n('cK'),d:n('cD'),a:n('cA'),imp:n('cImp'),time:mode==='HP'?n('cTime'):0,ts:new Date().toLocaleString()};
+  const m={id:Date.now(),mode,dur:Math.max(n('cDur'),.1),score:n('cScore'),k:n('cK'),d:n('cD'),a:n('cA'),imp:n('cImp'),time:mode==='HP'?n('cTime'):0,ts:new Date().toLocaleString(),matchNo:$('cMatchNo').value.trim()};
   const p=cp.find(z=>z.name.toLowerCase()===name.toLowerCase()&&z.team.toLowerCase()===team.toLowerCase());
-  if(p){p.matches.push(m);p.role=$('cRole').value}else cp.push({id:Date.now(),team,name,role:$('cRole').value,matches:[m],qual:{}});
+  const role=$('cRole').value,also=[...document.querySelectorAll('#cAlso input:checked')].map(i=>i.value).filter(r=>r!==role);
+  if(cEdit){
+    const ep=cp.find(z=>z.id===cEdit.pid);
+    if(ep){const old=ep.matches[cEdit.i];m.id=old.id;m.ts=old.ts;ep.matches[cEdit.i]=m;Object.assign(ep,{team,name,role,alsoRoles:also})}
+    stopE();cSave();return;
+  }
+  if(p){p.matches.push(m);p.role=role;p.alsoRoles=also}else cp.push({id:Date.now(),team,name,role,alsoRoles:also,matches:[m],qual:{}});
   ['cDur','cScore','cImp','cK','cD','cA','cTime','cName'].forEach(i=>$(i).value='');
   cSave();$('cName').focus();
 };
 $('cExp').onclick=()=>saveFile('CODM_Tryouts.json',JSON.stringify(cp,null,2));
+$('cImp').onclick=()=>$('cImpF').click();
+$('cImpF').onchange=ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data))return alert('Invalid JSON format. Please upload a CODM tryout export file.');
+      const num=v=>Number.isFinite(+v)?+v:0,good=[];
+      data.forEach((p,pi)=>{
+        if(!p||!p.name||!p.team||!Array.isArray(p.matches))return;
+        const ms=p.matches.filter(m=>m&&KS.includes(m.mode)).map((m,i)=>({id:m.id||Date.now()+pi*1000+i,mode:m.mode,dur:Math.max(num(m.dur),.1),score:num(m.score),k:num(m.k),d:num(m.d),a:num(m.a),imp:num(m.imp),time:num(m.time),ts:m.ts||'Imported',matchNo:String(m.matchNo||'')}));
+        if(ms.length)good.push({id:Date.now()+pi,team:String(p.team),name:String(p.name),role:ROLES[p.role]?p.role:'',alsoRoles:(Array.isArray(p.alsoRoles)?p.alsoRoles:[]).filter(r=>ROLES[r]&&r!==p.role),matches:ms,qual:p.qual||{}});
+      });
+      if(!good.length)return alert('No valid CODM players found in that file.');
+      if(cp.length&&confirm("MERGE imported players with current data? Click 'Cancel' to REPLACE current data instead.")){
+        good.forEach(g=>{
+          const l=cp.find(z=>z.name.toLowerCase()===g.name.toLowerCase()&&z.team.toLowerCase()===g.team.toLowerCase());
+          if(l){const have=new Set(l.matches.map(m=>m.id));l.matches=l.matches.concat(g.matches.filter(m=>!have.has(m.id)));if(!l.role&&g.role)l.role=g.role;if(!(l.alsoRoles||[]).length)l.alsoRoles=g.alsoRoles;if(!Object.keys(l.qual||{}).length)l.qual=g.qual}
+          else cp.push(g);
+        });
+      }else{
+        if(cp.length&&!confirm('This will REPLACE all current CODM data. Continue?'))return;
+        cp=good;
+      }
+      cClose();cSave();alert('Successfully imported '+good.length+' player'+(good.length===1?'':'s')+'.');
+    }catch(err){alert('Error parsing JSON file: '+err.message)}
+  };
+  rd.readAsText(f);ev.target.value='';
+};
 $('cClr').onclick=()=>{if(confirm('Reset all CODM tryout data?')){cp=[];cClose();cSave()}};
 
 const PC=['#0b5cad','#FFC72C','#0d8a5e','#7c3fc4','#d6384a'];
@@ -644,7 +720,7 @@ function bars(title,sel,get,fmt,max){
 window.cmpBars=bars;window.cmpPC=PC;
 function cmpRender(){
   cmp=new Set([...cmp].filter(id=>cp.some(p=>p.id===id)));
-  const sy=cm.firstChild?cm.firstChild.scrollTop:0,{A}=analyze(),L=[...A].sort((m,n)=>n.a.ready-m.a.ready),sel=L.filter(x=>cmp.has(x.p.id)),full=cmp.size>=5,LF=L.filter(x=>cmp.has(x.p.id)||((cfR==='ALL'||x.p.role===cfR)&&(cfT==='ALL'||x.p.team===cfT)));
+  const sy=cm.firstChild?cm.firstChild.scrollTop:0,{A}=analyze(),L=[...A].sort((m,n)=>n.a.ready-m.a.ready),sel=L.filter(x=>cmp.has(x.p.id)),full=cmp.size>=5,LF=L.filter(x=>cmp.has(x.p.id)||((cfR==='ALL'||x.p.role===cfR||(x.p.alsoRoles||[]).includes(cfR))&&(cfT==='ALL'||x.p.team===cfT)));
   let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${cmp.size} selected).</div><div class="filters" style="margin-bottom:10px"><select id="cfR"><option value="ALL">All Roles</option>${Object.keys(ROLES).map(k=>`<option value="${k}" ${cfR===k?'selected':''}>${ROLES[k]}</option>`).join('')}</select><select id="cfT"><option value="ALL">All Teams</option>${[...new Set(cp.map(p=>p.team))].map(t=>`<option value="${esc(t)}" ${cfT===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div><div class="chips">${LF.map(x=>`<label class="chip ${cmp.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${cmp.has(x.p.id)?'checked':''} ${full&&!cmp.has(x.p.id)?'disabled':''}> ${esc(x.p.name)}</label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
   if(sel.length<2)h+='<div class="empty">Select at least two players to compare.</div>';
   else{
@@ -689,7 +765,7 @@ const mRender=()=>{
   const bars=window.cmpBars,PC=window.cmpPC;
   msel=new Set([...msel].filter(id=>players.some(p=>p.id===id)));
   const sy=mm.firstChild?mm.firstChild.scrollTop:0;
-  const L=players.map(p=>({p,s:score(p)})).sort((a,b)=>b.s.overall-a.s.overall),ch=L.filter(x=>msel.has(x.p.id)),full=msel.size>=5,LF=L.filter(x=>msel.has(x.p.id)||((mfR==='ALL'||x.p.role===mfR)&&(mfT==='ALL'||x.p.teamName===mfT)));
+  const L=players.map(p=>({p,s:score(p)})).sort((a,b)=>b.s.overall-a.s.overall),ch=L.filter(x=>msel.has(x.p.id)),full=msel.size>=5,LF=L.filter(x=>msel.has(x.p.id)||((mfR==='ALL'||x.p.role===mfR||(x.p.alsoRoles||[]).includes(mfR))&&(mfT==='ALL'||x.p.teamName===mfT)));
   const r=v=>Math.round(v),f1=v=>v.toFixed(1),k=v=>(v/1000).toFixed(1)+'k',cv=key=>x=>x.p[key]==null?null:x.p[key],t10=v=>v.toFixed(1)+'/10';
   let h=`<div class="pn2"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h2 class="disp" style="margin:0;font-size:26px;color:var(--blue2)">⚖️ Compare Players</h2><button class="btn2" data-x="1">✕</button></div><div class="mut" style="margin:6px 0 10px">Pick 2 to 5 players (${msel.size} selected). Stats shown are each player's averages.</div><div class="filters" style="margin-bottom:10px"><select id="mfR"><option value="ALL">All Roles</option>${['Roamer','Jungler','Mid Laner','Gold Laner','EXP Laner'].map(k=>`<option ${mfR===k?'selected':''}>${k}</option>`).join('')}</select><select id="mfT"><option value="ALL">All Teams</option>${[...new Set(players.map(p=>p.teamName))].map(t=>`<option value="${esc(t)}" ${mfT===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div><div class="chips">${LF.map(x=>`<label class="chip ${msel.has(x.p.id)?'on':''}"><input type="checkbox" data-c="${x.p.id}" ${msel.has(x.p.id)?'checked':''} ${full&&!msel.has(x.p.id)?'disabled':''}> ${esc(x.p.name)} <span class="mut">${esc(x.p.role)}</span></label>`).join('')||'<span class="mut">No players yet.</span>'}</div>`;
   if(ch.length<2)h+='<div class="empty">Select at least two players to compare.</div>';
@@ -704,7 +780,7 @@ const mRender=()=>{
       bars('Hero damage',ch,cv('heroDmg'),k),bars('Turret damage',ch,cv('turretDmg'),k),bars('Damage taken',ch,cv('dmgTaken'),k),bars('Total gold',ch,cv('totalGold'),k),
       bars('Communication (1-10)',ch,cv('comms'),t10,10),bars('Resilience (1-10)',ch,cv('resilience'),t10,10),bars('Hero pool (1-10)',ch,cv('versatility'),t10,10)
     ].join('')}</div>`;
-    h+=`<h3 class="disp" style="margin:18px 0 0;color:var(--goldink)">📝 Coach Ratings</h3><div class="mut">Averaged across each player's rated matches.</div><div class="ncs">${ch.map((x,i)=>`<div class="nc" style="border-top:4px solid ${PC[i]}"><b>${esc(x.p.name)}</b> <span class="mut">${esc(x.p.teamName)} · ${esc(x.p.role)}</span><div class="mut">Overall ${x.s.overall}${x.s.rated?'':'*'} · ${x.p.gamesPlayed} game${x.p.gamesPlayed===1?'':'s'}</div>${[['comms','Communication'],['resilience','Resilience'],['versatility','Hero Pool']].map(([key,l])=>`<div class="nq"><span>${l}</span><b>${x.p[key]==null?'Not rated':x.p[key].toFixed(1)+'/10'}</b><p>${x.p.notes&&x.p.notes[key]?esc(x.p.notes[key]):'<i class="mut">No notes yet.</i>'}</p></div>`).join('')}</div>`).join('')}</div>`;
+    h+=`<h3 class="disp" style="margin:18px 0 0;color:var(--goldink)">📝 Coach Ratings</h3><div class="mut">Averaged across each player's rated matches.</div><div class="ncs">${ch.map((x,i)=>`<div class="nc" style="border-top:4px solid ${PC[i]}"><b>${esc(x.p.name)}</b> <span class="mut">${esc(x.p.teamName)} · ${esc(x.p.role)}${(x.p.alsoRoles||[]).length?' (also '+x.p.alsoRoles.map(esc).join(', ')+')':''}</span><div class="mut">Overall ${x.s.overall}${x.s.rated?'':'*'} · ${x.p.gamesPlayed} game${x.p.gamesPlayed===1?'':'s'}</div>${[['comms','Communication'],['resilience','Resilience'],['versatility','Hero Pool']].map(([key,l])=>`<div class="nq"><span>${l}</span><b>${x.p[key]==null?'Not rated':x.p[key].toFixed(1)+'/10'}</b><p>${x.p.notes&&x.p.notes[key]?esc(x.p.notes[key]):'<i class="mut">No notes yet.</i>'}</p></div>`).join('')}</div>`).join('')}</div>`;
   }
   mm.innerHTML=h+'</div>';mm.classList.add('on');if(mm.firstChild)mm.firstChild.scrollTop=sy;
 };
