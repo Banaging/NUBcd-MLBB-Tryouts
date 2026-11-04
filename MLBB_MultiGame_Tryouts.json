@@ -19,9 +19,9 @@
         "turretDmg": 6792,
         "dmgTaken": 25282,
         "totalGold": 9484,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "1"
       },
       {
@@ -36,9 +36,9 @@
         "turretDmg": 5406,
         "dmgTaken": 30614,
         "totalGold": 6719,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "2"
       },
       {
@@ -53,9 +53,9 @@
         "turretDmg": 8068,
         "dmgTaken": 106587,
         "totalGold": 11474,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "3"
       },
       {
@@ -70,9 +70,9 @@
         "turretDmg": 0,
         "dmgTaken": 29303,
         "totalGold": 9477,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "4"
       },
       {
@@ -87,9 +87,9 @@
         "turretDmg": 21122,
         "dmgTaken": 12427,
         "totalGold": 8708,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "5"
       },
       {
@@ -104,9 +104,9 @@
         "turretDmg": 7772,
         "dmgTaken": 39045,
         "totalGold": 10754,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "6"
       }
     ],
@@ -121,9 +121,10 @@
     "turretDmg": 8193.333333333334,
     "dmgTaken": 40543,
     "totalGold": 9436,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 8,
+    "resilience": 8,
+    "versatility": 8,
+    "alsoRoles": []
   },
   {
     "id": 1792479462376,
@@ -145,9 +146,9 @@
         "turretDmg": 1684,
         "dmgTaken": 73757,
         "totalGold": 9484,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 5,
+        "versatility": 7,
         "matchNo": "1"
       },
       {
@@ -162,9 +163,9 @@
         "turretDmg": 0,
         "dmgTaken": 71227,
         "totalGold": 6384,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 5,
+        "versatility": 7,
         "matchNo": "2"
       },
       {
@@ -179,9 +180,9 @@
         "turretDmg": 1315,
         "dmgTaken": 71048,
         "totalGold": 8559,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 5,
+        "versatility": 7,
         "matchNo": "3"
       },
       {
@@ -196,9 +197,9 @@
         "turretDmg": 0,
         "dmgTaken": 76602,
         "totalGold": 5569,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 5,
+        "versatility": 7,
         "matchNo": "4"
       },
       {
@@ -213,9 +214,9 @@
         "turretDmg": 0,
         "dmgTaken": 54288,
         "totalGold": 5351,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 5,
+        "versatility": 7,
         "matchNo": "5"
       },
       {
@@ -230,9 +231,9 @@
         "turretDmg": 0,
         "dmgTaken": 79414,
         "totalGold": 7494,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 5,
+        "versatility": 7,
         "matchNo": "6"
       }
     ],
@@ -247,9 +248,10 @@
     "turretDmg": 499.8333333333333,
     "dmgTaken": 71056,
     "totalGold": 7140.166666666667,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 5,
+    "resilience": 5,
+    "versatility": 7,
+    "alsoRoles": []
   },
   {
     "id": 1792479532528,
@@ -271,9 +273,9 @@
         "turretDmg": 1684,
         "dmgTaken": 84070,
         "totalGold": 6627,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 9,
+        "versatility": 10,
         "matchNo": "1"
       },
       {
@@ -288,9 +290,9 @@
         "turretDmg": 437,
         "dmgTaken": 51456,
         "totalGold": 6333,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 9,
+        "versatility": 10,
         "matchNo": "2"
       },
       {
@@ -305,9 +307,9 @@
         "turretDmg": 5050,
         "dmgTaken": 109416,
         "totalGold": 10955,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 9,
+        "versatility": 10,
         "matchNo": "3"
       },
       {
@@ -322,9 +324,9 @@
         "turretDmg": 1362,
         "dmgTaken": 52432,
         "totalGold": 8158,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 9,
+        "versatility": 10,
         "matchNo": "4"
       },
       {
@@ -339,9 +341,9 @@
         "turretDmg": 10917,
         "dmgTaken": 28892,
         "totalGold": 6919,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 9,
+        "versatility": 10,
         "matchNo": "5"
       },
       {
@@ -356,9 +358,9 @@
         "turretDmg": 60,
         "dmgTaken": 60578,
         "totalGold": 7208,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 8,
+        "resilience": 9,
+        "versatility": 10,
         "matchNo": "6"
       }
     ],
@@ -373,9 +375,10 @@
     "turretDmg": 3251.6666666666665,
     "dmgTaken": 64474,
     "totalGold": 7700,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 8,
+    "resilience": 9,
+    "versatility": 10,
+    "alsoRoles": []
   },
   {
     "id": 1792479657856,
@@ -397,9 +400,9 @@
         "turretDmg": 18577,
         "dmgTaken": 38796,
         "totalGold": 10310,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "1"
       },
       {
@@ -414,9 +417,9 @@
         "turretDmg": 437,
         "dmgTaken": 51456,
         "totalGold": 9083,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "2"
       },
       {
@@ -431,9 +434,9 @@
         "turretDmg": 3854,
         "dmgTaken": 127597,
         "totalGold": 9612,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "3"
       },
       {
@@ -448,9 +451,9 @@
         "turretDmg": 20863,
         "dmgTaken": 15163,
         "totalGold": 9477,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "4"
       },
       {
@@ -465,9 +468,9 @@
         "turretDmg": 15017,
         "dmgTaken": 17458,
         "totalGold": 7417,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "5"
       },
       {
@@ -482,9 +485,9 @@
         "turretDmg": 20750,
         "dmgTaken": 28545,
         "totalGold": 10735,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "6"
       }
     ],
@@ -499,9 +502,10 @@
     "turretDmg": 13249.666666666666,
     "dmgTaken": 46502.5,
     "totalGold": 9439,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 10,
+    "resilience": 8,
+    "versatility": 8,
+    "alsoRoles": []
   },
   {
     "id": 1792479707280,
@@ -523,9 +527,9 @@
         "turretDmg": 4619,
         "dmgTaken": 20535,
         "totalGold": 9156,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 10,
+        "versatility": 7,
         "matchNo": "1"
       },
       {
@@ -540,9 +544,9 @@
         "turretDmg": 3241,
         "dmgTaken": 16190,
         "totalGold": 7463,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 10,
+        "versatility": 7,
         "matchNo": "2"
       },
       {
@@ -557,9 +561,9 @@
         "turretDmg": 4071,
         "dmgTaken": 74395,
         "totalGold": 8297,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 10,
+        "versatility": 7,
         "matchNo": "3"
       },
       {
@@ -574,9 +578,9 @@
         "turretDmg": 0,
         "dmgTaken": 15140,
         "totalGold": 6052,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 10,
+        "versatility": 7,
         "matchNo": "4"
       },
       {
@@ -591,9 +595,9 @@
         "turretDmg": 7425,
         "dmgTaken": 19383,
         "totalGold": 6675,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 10,
+        "versatility": 7,
         "matchNo": "5"
       },
       {
@@ -608,9 +612,9 @@
         "turretDmg": 0,
         "dmgTaken": 18088,
         "totalGold": 7806,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 10,
+        "resilience": 10,
+        "versatility": 7,
         "matchNo": "6"
       }
     ],
@@ -625,9 +629,10 @@
     "turretDmg": 3226,
     "dmgTaken": 27288.5,
     "totalGold": 7574.833333333333,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 10,
+    "resilience": 10,
+    "versatility": 7,
+    "alsoRoles": []
   },
   {
     "id": 1792479844448,
@@ -649,9 +654,9 @@
         "turretDmg": 0,
         "dmgTaken": 43695,
         "totalGold": 6568,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 5,
+        "versatility": 1,
         "matchNo": "1"
       },
       {
@@ -666,9 +671,9 @@
         "turretDmg": 0,
         "dmgTaken": 32232,
         "totalGold": 4696,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 5,
+        "versatility": 1,
         "matchNo": "2"
       },
       {
@@ -683,9 +688,9 @@
         "turretDmg": 1110,
         "dmgTaken": 45677,
         "totalGold": 11182,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 5,
+        "versatility": 1,
         "matchNo": "3"
       },
       {
@@ -700,9 +705,9 @@
         "turretDmg": 2787,
         "dmgTaken": 40065,
         "totalGold": 6691,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 5,
+        "versatility": 1,
         "matchNo": "4"
       },
       {
@@ -717,9 +722,9 @@
         "turretDmg": 0,
         "dmgTaken": 33110,
         "totalGold": 5608,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 5,
+        "versatility": 1,
         "matchNo": "5"
       },
       {
@@ -734,9 +739,9 @@
         "turretDmg": 1628,
         "dmgTaken": 30592,
         "totalGold": 8193,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 5,
+        "versatility": 1,
         "matchNo": "6"
       }
     ],
@@ -751,9 +756,10 @@
     "turretDmg": 920.8333333333334,
     "dmgTaken": 37561.833333333336,
     "totalGold": 7156.333333333333,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 7,
+    "resilience": 5,
+    "versatility": 1,
+    "alsoRoles": []
   },
   {
     "id": 1792479880056,
@@ -775,9 +781,9 @@
         "turretDmg": 0,
         "dmgTaken": 37141,
         "totalGold": 6274,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "1"
       },
       {
@@ -792,9 +798,9 @@
         "turretDmg": 0,
         "dmgTaken": 87694,
         "totalGold": 5265,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "2"
       },
       {
@@ -809,9 +815,9 @@
         "turretDmg": 183,
         "dmgTaken": 166198,
         "totalGold": 8969,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "3"
       },
       {
@@ -826,9 +832,9 @@
         "turretDmg": 0,
         "dmgTaken": 54215,
         "totalGold": 7582,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "4"
       },
       {
@@ -843,9 +849,9 @@
         "turretDmg": 2741,
         "dmgTaken": 35459,
         "totalGold": 6075,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "5"
       },
       {
@@ -860,9 +866,9 @@
         "turretDmg": 1509,
         "dmgTaken": 100340,
         "totalGold": 7957,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 8,
+        "versatility": 8,
         "matchNo": "6"
       }
     ],
@@ -877,9 +883,10 @@
     "turretDmg": 738.8333333333334,
     "dmgTaken": 80174.5,
     "totalGold": 7020.333333333333,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 5,
+    "resilience": 8,
+    "versatility": 8,
+    "alsoRoles": []
   },
   {
     "id": 1792479961768,
@@ -901,9 +908,9 @@
         "turretDmg": 178,
         "dmgTaken": 113228,
         "totalGold": 6317,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": "1"
       },
       {
@@ -918,9 +925,9 @@
         "turretDmg": 0,
         "dmgTaken": 31172,
         "totalGold": 5278,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": "2"
       },
       {
@@ -935,9 +942,9 @@
         "turretDmg": 6830,
         "dmgTaken": 107148,
         "totalGold": 9421,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": "3"
       },
       {
@@ -952,9 +959,9 @@
         "turretDmg": 0,
         "dmgTaken": 104581,
         "totalGold": 5582,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": "4"
       },
       {
@@ -969,9 +976,9 @@
         "turretDmg": 6453,
         "dmgTaken": 39164,
         "totalGold": 5351,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": "5"
       },
       {
@@ -986,9 +993,9 @@
         "turretDmg": 12660,
         "dmgTaken": 68179,
         "totalGold": 9231,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": "6"
       }
     ],
@@ -1003,9 +1010,10 @@
     "turretDmg": 4353.5,
     "dmgTaken": 77245.33333333333,
     "totalGold": 6863.333333333333,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 7,
+    "resilience": 6,
+    "versatility": 7,
+    "alsoRoles": []
   },
   {
     "id": 1792480005984,
@@ -1027,9 +1035,9 @@
         "turretDmg": 0,
         "dmgTaken": 111661,
         "totalGold": 6355,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 9,
+        "resilience": 9,
+        "versatility": 9,
         "matchNo": "1"
       },
       {
@@ -1044,9 +1052,9 @@
         "turretDmg": 3276,
         "dmgTaken": 36585,
         "totalGold": 6040,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 9,
+        "resilience": 9,
+        "versatility": 9,
         "matchNo": "2"
       },
       {
@@ -1061,9 +1069,9 @@
         "turretDmg": 320,
         "dmgTaken": 238613,
         "totalGold": 11182,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 9,
+        "resilience": 9,
+        "versatility": 9,
         "matchNo": "3"
       }
     ],
@@ -1078,9 +1086,10 @@
     "turretDmg": 1198.6666666666667,
     "dmgTaken": 128953,
     "totalGold": 7859,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 9,
+    "resilience": 9,
+    "versatility": 9,
+    "alsoRoles": []
   },
   {
     "id": 1792480051649,
@@ -1102,9 +1111,9 @@
         "turretDmg": 2948,
         "dmgTaken": 56372,
         "totalGold": 7811,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 2,
+        "resilience": 2,
+        "versatility": 5,
         "matchNo": "1"
       },
       {
@@ -1204,9 +1213,10 @@
     "turretDmg": 3443.6666666666665,
     "dmgTaken": 48561.833333333336,
     "totalGold": 7470,
-    "comms": null,
-    "resilience": null,
-    "versatility": null
+    "comms": 2,
+    "resilience": 2,
+    "versatility": 5,
+    "alsoRoles": []
   },
   {
     "id": 1792485415488,
@@ -1228,9 +1238,9 @@
         "turretDmg": 3550,
         "dmgTaken": 24438,
         "totalGold": 6393,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 1,
+        "resilience": 1,
+        "versatility": 1,
         "matchNo": "5"
       },
       {
@@ -1245,9 +1255,9 @@
         "turretDmg": 0,
         "dmgTaken": 20551,
         "totalGold": 6642,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 1,
+        "resilience": 1,
+        "versatility": 1,
         "matchNo": "4"
       },
       {
@@ -1262,9 +1272,9 @@
         "turretDmg": 3800,
         "dmgTaken": 44354,
         "totalGold": 9255,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 1,
+        "resilience": 1,
+        "versatility": 1,
         "matchNo": "6"
       }
     ],
@@ -1279,10 +1289,11 @@
     "turretDmg": 2450,
     "dmgTaken": 29781,
     "totalGold": 7430,
-    "comms": null,
-    "resilience": null,
-    "versatility": null,
-    "matchNo": "4"
+    "comms": 1,
+    "resilience": 1,
+    "versatility": 1,
+    "matchNo": "4",
+    "alsoRoles": []
   },
   {
     "id": 1792632839011,
@@ -1303,9 +1314,9 @@
         "turretDmg": 6417,
         "dmgTaken": 31733,
         "totalGold": 10482,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 6,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1320,9 +1331,9 @@
         "turretDmg": 0,
         "dmgTaken": 48222,
         "totalGold": 6017,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 6,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1337,9 +1348,9 @@
         "turretDmg": 308,
         "dmgTaken": 70175,
         "totalGold": 10311,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 6,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1354,9 +1365,9 @@
         "turretDmg": 1424,
         "dmgTaken": 266391,
         "totalGold": 15022,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 6,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1371,9 +1382,9 @@
         "turretDmg": 0,
         "dmgTaken": 142644,
         "totalGold": 11507,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 5,
+        "resilience": 6,
+        "versatility": 8,
         "matchNo": ""
       }
     ],
@@ -1388,10 +1399,11 @@
     "turretDmg": 1629.8,
     "dmgTaken": 111833,
     "totalGold": 10667.8,
-    "comms": null,
-    "resilience": null,
-    "versatility": null,
-    "matchNo": "1"
+    "comms": 5,
+    "resilience": 6,
+    "versatility": 8,
+    "matchNo": "1",
+    "alsoRoles": []
   },
   {
     "id": 1792632909603,
@@ -1412,9 +1424,9 @@
         "turretDmg": 2245,
         "dmgTaken": 69164,
         "totalGold": 6942,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": ""
       },
       {
@@ -1429,9 +1441,9 @@
         "turretDmg": 0,
         "dmgTaken": 97104,
         "totalGold": 5481,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": ""
       },
       {
@@ -1446,9 +1458,9 @@
         "turretDmg": 0,
         "dmgTaken": 60006,
         "totalGold": 10165,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": ""
       },
       {
@@ -1463,9 +1475,9 @@
         "turretDmg": 2579,
         "dmgTaken": 85476,
         "totalGold": 11253,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": ""
       },
       {
@@ -1480,9 +1492,9 @@
         "turretDmg": 0,
         "dmgTaken": 73729,
         "totalGold": 10351,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 7,
+        "resilience": 6,
+        "versatility": 7,
         "matchNo": ""
       }
     ],
@@ -1497,10 +1509,11 @@
     "turretDmg": 964.8,
     "dmgTaken": 77095.8,
     "totalGold": 8838.4,
-    "comms": null,
-    "resilience": null,
-    "versatility": null,
-    "matchNo": "1"
+    "comms": 7,
+    "resilience": 6,
+    "versatility": 7,
+    "matchNo": "1",
+    "alsoRoles": []
   },
   {
     "id": 1792635131331,
@@ -1521,9 +1534,9 @@
         "turretDmg": 4844,
         "dmgTaken": 43099,
         "totalGold": 7329,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 2,
+        "resilience": 2,
+        "versatility": 4,
         "matchNo": ""
       },
       {
@@ -1538,9 +1551,9 @@
         "turretDmg": 0,
         "dmgTaken": 63521,
         "totalGold": 5418,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 2,
+        "resilience": 2,
+        "versatility": 4,
         "matchNo": ""
       },
       {
@@ -1555,9 +1568,9 @@
         "turretDmg": 275,
         "dmgTaken": 117757,
         "totalGold": 8000,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 2,
+        "resilience": 2,
+        "versatility": 4,
         "matchNo": ""
       },
       {
@@ -1572,9 +1585,9 @@
         "turretDmg": 2001,
         "dmgTaken": 189503,
         "totalGold": 11135,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 2,
+        "resilience": 2,
+        "versatility": 4,
         "matchNo": ""
       },
       {
@@ -1589,9 +1602,9 @@
         "turretDmg": 0,
         "dmgTaken": 180284,
         "totalGold": 10160,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 2,
+        "resilience": 2,
+        "versatility": 4,
         "matchNo": ""
       }
     ],
@@ -1606,10 +1619,11 @@
     "turretDmg": 1424,
     "dmgTaken": 118832.8,
     "totalGold": 8408.4,
-    "comms": null,
-    "resilience": null,
-    "versatility": null,
-    "matchNo": "1"
+    "comms": 2,
+    "resilience": 2,
+    "versatility": 4,
+    "matchNo": "1",
+    "alsoRoles": []
   },
   {
     "id": 1792635203563,
@@ -1630,9 +1644,9 @@
         "turretDmg": 3100,
         "dmgTaken": 17300,
         "totalGold": 8122,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 4,
+        "resilience": 7,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1647,9 +1661,9 @@
         "turretDmg": 0,
         "dmgTaken": 42516,
         "totalGold": 4874,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 4,
+        "resilience": 7,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1664,9 +1678,9 @@
         "turretDmg": 2770,
         "dmgTaken": 191573,
         "totalGold": 10616,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 4,
+        "resilience": 7,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1681,9 +1695,9 @@
         "turretDmg": 2796,
         "dmgTaken": 39063,
         "totalGold": 13321,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 4,
+        "resilience": 7,
+        "versatility": 8,
         "matchNo": ""
       },
       {
@@ -1698,9 +1712,9 @@
         "turretDmg": 0,
         "dmgTaken": 50701,
         "totalGold": 11154,
-        "comms": null,
-        "resilience": null,
-        "versatility": null,
+        "comms": 4,
+        "resilience": 7,
+        "versatility": 8,
         "matchNo": ""
       }
     ],
@@ -1715,9 +1729,10 @@
     "turretDmg": 1733.2,
     "dmgTaken": 68230.6,
     "totalGold": 9617.4,
-    "comms": null,
-    "resilience": null,
-    "versatility": null,
-    "matchNo": "1"
+    "comms": 4,
+    "resilience": 7,
+    "versatility": 8,
+    "matchNo": "1",
+    "alsoRoles": []
   }
 ]

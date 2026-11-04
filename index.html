@@ -173,7 +173,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
         </div>
         <div class="sec"><h3 class="disp">⚔️ End-Game Stats</h3><div class="g c2">
           <div><label>Score</label><input type="number" id="cScore" required min="0"></div>
-          <div><label>Impact</label><input type="number" id="cImpBtn" required min="0"></div>
+          <div><label>Impact</label><input type="number" id="cImp" required min="0"></div>
           <div><label>Kills</label><input type="number" id="cK" required min="0"></div>
           <div><label>Deaths</label><input type="number" id="cD" required min="0"></div>
           <div><label>Assists</label><input type="number" id="cA" required min="0"></div>
@@ -186,7 +186,7 @@ textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid va
     <section>
       <div class="card">
         <div class="t"><div><h2>🏆 CODM Leaderboard</h2><div class="mut">Click a name for the coach evaluation panel.</div></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="file" id="cImpF" accept=".json" hidden><button class="btn2" id="cImp">📤 Import JSON</button><button class="btn2" id="cCmp">⚖️ Compare</button><button class="btn2" id="cExp">📥 Export JSON</button><button class="btn2" id="cClr">🗑️ Reset</button></div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="file" id="cImpF" accept=".json" hidden><button class="btn2" id="cImpBtn">📤 Import JSON</button><button class="btn2" id="cCmp">⚖️ Compare</button><button class="btn2" id="cExp">📥 Export JSON</button><button class="btn2" id="cClr">🗑️ Reset</button></div></div>
         <div class="tabs" id="cTabs"></div>
         <div class="tw"><table><thead><tr><th>#</th><th>Player</th><th>Team</th><th>Role</th><th>HP/SD/CTL</th><th>KD</th><th>APK</th><th>IKR</th><th>Quant</th><th>Qual</th><th>Readiness</th><th></th></tr></thead><tbody id="cLb"></tbody></table></div>
       </div>
@@ -453,7 +453,7 @@ function newPdf(title,sub,orient){
 function finishPdf(doc,name){
   const n=doc.getNumberOfPages(),w=doc.internal.pageSize.getWidth(),h=doc.internal.pageSize.getHeight();
   for(let i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120,130,150);
-    doc.text('NU Bulldogs MLBB Varsity Tryouts - generated '+new Date().toLocaleDateString('en-US'),36,h-20);
+    doc.text('NU Bulldogs Varsity Tryouts - generated '+new Date().toLocaleDateString('en-US'),36,h-20);
     doc.text('Page '+i+' of '+n,w-36,h-20,{align:'right'})}
   saveFile(name,doc.output('blob'));
 }
@@ -462,18 +462,18 @@ function pdfBoard(){
   const sc=new Map(players.map(p=>[p.id,score(p)]));
   const tops={};players.forEach(p=>{const s=sc.get(p.id).overall;if(!tops[p.role]||s>tops[p.role].s)tops[p.role]={id:p.id,s}});
   const topIds=Object.values(tops).map(t=>t.id);
-  const list=players.filter(p=>(rf==='ALL'||p.role===rf||(p.alsoRoles||[]).includes(rf))&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
+  const noTop=$('pdfNoTop')&&$('pdfNoTop').checked,list=players.filter(p=>(rf==='ALL'||p.role===rf||(p.alsoRoles||[]).includes(rf))&&(tf==='ALL'||p.teamName===tf)).sort((a,b)=>sc.get(b.id).overall-sc.get(a.id).overall);
   if(!list.length)return alert('No players to export.');
-  const doc=newPdf('NU Bulldogs - MLBB Tryout Leaderboard',($('matchFilter').value==='ALL'?'':'Match: '+$('matchFilter').selectedOptions[0].textContent+'   |   ')+'Team: '+(tf==='ALL'?'All':tf)+'   |   Role: '+(rf==='ALL'?'All':rf)+'   |   '+list.length+' player'+(list.length===1?'':'s'),'l');
+  const doc=newPdf('NU Bulldogs - MLBB Tryout Leaderboard',($('matchFilter').value==='ALL'?'':'Match: '+$('matchFilter').selectedOptions[0].textContent+'   |   ')+'Team: '+(tf==='ALL'?'All':tf)+'   |   Role: '+(rf==='ALL'?'All':rf)+'   |   '+list.length+' of '+players.length+' players','l');
   if(!doc)return;
-  doc.autoTable({startY:92,theme:'grid',styles:{fontSize:8,cellPadding:4,lineColor:[219,226,240]},
+  doc.autoTable({startY:92,rowPageBreak:'avoid',theme:'grid',styles:{fontSize:7,cellPadding:2.5,lineColor:[219,226,240]},
     headStyles:{fillColor:BLUE,textColor:255},alternateRowStyles:{fillColor:ZEBRA},
     head:[['#','Player','Team','Role','GP','K/D/A','TF %','Hero Dmg','Turret','Dmg Taken','Gold','Time','Quant','Qual','Overall']],
-    body:list.map((p,i)=>{const s=sc.get(p.id);return [i+1,p.name+(topIds.includes(p.id)?' [TOP]':''),p.teamName,p.role+((p.alsoRoles||[]).length?' (+'+p.alsoRoles.join(', ')+')':''),p.gamesPlayed,nf(p.kills,1)+'/'+nf(p.deaths,1)+'/'+nf(p.assists,1),nf(p.tfPart,1),nf(p.heroDmg),nf(p.turretDmg),nf(p.dmgTaken),nf(p.totalGold),p.matchTime?nf(p.matchTime,1):'-',s.quant,s.rated?s.qual:'Pending',s.overall+(s.rated?'':'*')]}),
-    didParseCell:d=>{if(d.section==='body'&&topIds.includes(list[d.row.index].id))d.cell.styles.fillColor=HILITE}});
+    body:list.map((p,i)=>{const s=sc.get(p.id);return [i+1,p.name+(!noTop&&topIds.includes(p.id)?' [TOP]':''),p.teamName,p.role+((p.alsoRoles||[]).length?' +'+p.alsoRoles.length:''),p.gamesPlayed,nf(p.kills,1)+'/'+nf(p.deaths,1)+'/'+nf(p.assists,1),nf(p.tfPart,1),nf(p.heroDmg),nf(p.turretDmg),nf(p.dmgTaken),nf(p.totalGold),p.matchTime?nf(p.matchTime,1):'-',s.quant,s.rated?s.qual:'Pending',s.overall+(s.rated?'':'*')]}),
+    didParseCell:d=>{if(!noTop&&d.section==='body'&&topIds.includes(list[d.row.index].id))d.cell.styles.fillColor=HILITE}});
   const y=doc.lastAutoTable.finalY+14;
   doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);
-  doc.text('Highlighted rows marked [TOP] are the top candidate in each role. An asterisk (*) on an Overall score means it is provisional (coach ratings pending). Overall = 60% match stats + 40% coach evaluation. Time is in minutes.',36,y,{maxWidth:doc.internal.pageSize.getWidth()-72});
+  doc.text((noTop?'':'Highlighted rows marked [TOP] are the top candidate in each role. ')+'An asterisk (*) on an Overall score means it is provisional (coach ratings pending). Overall = 60% match stats + 40% coach evaluation. Time is in minutes.',36,y,{maxWidth:doc.internal.pageSize.getWidth()-72});
   finishPdf(doc,'NU_MLBB_Leaderboard_'+new Date().toISOString().slice(0,10)+'.pdf');
 }
 function pdfPlayer(id){
@@ -500,6 +500,7 @@ function pdfPlayer(id){
   finishPdf(doc,'NU_MLBB_'+p.name.replace(/[^\w-]+/g,'_')+'.pdf');
 }
 const bp=document.createElement('button');bp.className='btn2';bp.textContent='📄 Export PDF';bp.onclick=pdfBoard;$('roleFilter').after(bp);
+const nt=document.createElement('label');nt.className='chip';nt.style.margin='0';nt.innerHTML='<input type="checkbox" id="pdfNoTop"> Hide top-player markers';bp.after(nt);
 const mp=document.createElement('button');mp.className='btn2';mp.textContent='📄 PDF';mp.onclick=()=>pdfPlayer(curId);
 {const x=$('mX'),wr=document.createElement('div');wr.style.cssText='display:flex;gap:6px';x.replaceWith(wr);wr.append(mp,x)}
 $('bImp').onclick=()=>$('imp').click();
@@ -606,7 +607,7 @@ function cOpen(id){
   const{p,a}=x,q=p.qual||{},s=n=>n===1?'':'es';
   const avgs=[['KD',a.kd.toFixed(2)],['KD Diff',a.diff.toFixed(1)],['APK',a.apk.toFixed(2)],['IKR',a.ikr.toFixed(2)],['HP Time',a.hpTime==null?'-':a.hpTime.toFixed(0)+'s'],['OBJ Eff.',a.obj==null?'-':a.obj.toFixed(2)]];
   dr.innerHTML=`<div class="pn">
-   <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="margin:0;font-size:30px;color:var(--blue2)">${esc(p.name)}</h2><div class="mut">${esc(p.team)} · ${a.n} match${s(a.n)}</div><div>${roleTag(p)}${a.badges.map(bd).join('')}</div></div><button class="btn2" data-close="1">✕</button></div>
+   <div style="display:flex;justify-content:space-between;gap:8px"><div><h2 style="margin:0;font-size:30px;color:var(--blue2)">${esc(p.name)}</h2><div class="mut">${esc(p.team)} · ${a.n} match${s(a.n)}</div><div>${roleTag(p)}${a.badges.map(bd).join('')}</div></div><div style="display:flex;gap:6px"><button class="btn2" data-pdf="1">📄 PDF</button><button class="btn2" data-close="1">✕</button></div></div>
    <div class="sec"><label>Primary Role</label><select id="dRole">${roleOpts(p.role)}</select><label style="margin-top:8px">Also plays</label><div class="chips">${Object.keys(ROLES).filter(k=>k!==p.role).map(k=>{const on=(p.alsoRoles||[]).includes(k);return `<label class="chip ${on?'on':''}"><input type="checkbox" data-ar="${k}" ${on?'checked':''}> ${ROLES[k]}</label>`}).join('')}</div></div>
    <div class="g c3 sec"><div class="kv big"><span>Quantitative</span><b>${Math.round(a.quant)}/100</b></div><div class="kv big"><span>Qualitative</span><b>${a.rated?Math.round(a.qual)+'/100':'Pending'}</b></div><div class="kv big o"><span>Roster Readiness</span><b>${Math.round(a.ready)}${a.rated?'':'*'}</b></div></div>
    <div class="sec"><h3 class="disp">Mode scores (vs pool best)</h3><div class="g c3">${KS.map(k=>`<div class="kv"><span>${MODES[k]} · ${a.cnt[k]} match${s(a.cnt[k])}</span><b>${a.c[k]==null?'-':Math.round(a.sc[k])+'/100'}</b></div>`).join('')}</div></div>
@@ -621,6 +622,7 @@ function cOpen(id){
 function cClose(){dr.classList.remove('on');openId=null}
 dr.onclick=e=>{
   const t=e.target;
+  if(t.closest('[data-pdf]'))return pdfP(openId);
   if(t===dr||t.closest('[data-close]'))return cClose();
   const em=t.closest('[data-em]');if(em)return startE(openId,+em.dataset.em);
   const m=t.closest('[data-dm]');
@@ -679,7 +681,7 @@ $('cForm').onsubmit=e=>{
   cSave();$('cName').focus();
 };
 $('cExp').onclick=()=>saveFile('CODM_Tryouts.json',JSON.stringify(cp,null,2));
-$('cImp').onclick=()=>$('cImpF').click();
+$('cImpBtn').onclick=()=>$('cImpF').click();
 $('cImpF').onchange=ev=>{
   const f=ev.target.files[0];if(!f)return;
   const rd=new FileReader();
@@ -711,6 +713,51 @@ $('cImpF').onchange=ev=>{
 };
 $('cClr').onclick=()=>{if(confirm('Reset all CODM tryout data?')){cp=[];cClose();cSave()}};
 
+const nfc=(v,d)=>v==null||isNaN(v)?'-':d?(+v).toFixed(d):Math.round(v).toLocaleString('en-US');
+const roleTxt=p=>(ROLES[p.role]||'Unassigned')+((p.alsoRoles||[]).length?' +'+p.alsoRoles.length:'');
+function pdfC(){
+  const{A,top}=analyze(),noTop=$('cPdfNoTop')&&$('cPdfNoTop').checked;
+  const list=A.filter(x=>tab==='ALL'||x.p.role===tab||(x.p.alsoRoles||[]).includes(tab)).sort((m,n)=>n.a.ready-m.a.ready);
+  if(!list.length)return alert('No players to export.');
+  const doc=newPdf('NU Bulldogs - CODM Tryout Leaderboard','Role: '+TABS.find(z=>z[0]===tab)[1]+'   |   '+list.length+' of '+A.length+' players','l');
+  if(!doc)return;
+  doc.autoTable({startY:92,rowPageBreak:'avoid',theme:'grid',styles:{fontSize:7.5,cellPadding:3,lineColor:[219,226,240]},headStyles:{fillColor:BLUE,textColor:255},alternateRowStyles:{fillColor:ZEBRA},
+    head:[['#','Player','Team','Role','HP/SD/CTL','KD','KD Diff','APK','IKR','Quant','Qual','Readiness']],
+    body:list.map((x,i)=>{const{p,a}=x;return [i+1,p.name+(!noTop&&top[p.id]?' [TOP]':''),p.team,roleTxt(p),a.cnt.HP+'/'+a.cnt.SD+'/'+a.cnt.CTL,nfc(a.kd,2),nfc(a.diff,1),nfc(a.apk,2),nfc(a.ikr,2),Math.round(a.quant),a.rated?Math.round(a.qual):'Pending',Math.round(a.ready)+(a.rated?'':'*')]}),
+    didParseCell:d=>{if(!noTop&&d.section==='body'&&top[list[d.row.index].p.id])d.cell.styles.fillColor=HILITE}});
+  const y=doc.lastAutoTable.finalY+14;
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);
+  doc.text((noTop?'':'Highlighted rows marked [TOP] are the top player in each assigned role. ')+'Mode scores are scaled against the best player in the pool. Readiness = 50% quantitative + 50% coach ratings. An asterisk (*) means provisional (coach ratings pending). HP/SD/CTL = matches played in Hardpoint, S&D and Control.',36,y,{maxWidth:doc.internal.pageSize.getWidth()-72});
+  finishPdf(doc,'NU_CODM_Leaderboard_'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+function pdfP(id){
+  const x=analyze().A.find(z=>z.p.id===id);if(!x)return;
+  const{p,a}=x,q=p.qual||{};
+  const doc=newPdf(p.name,p.team+'   |   '+(ROLES[p.role]||'Unassigned')+((p.alsoRoles||[]).length?' (also '+p.alsoRoles.map(r=>ROLES[r]).join(', ')+')':'')+'   |   '+a.n+' match'+(a.n===1?'':'es'));
+  if(!doc)return;
+  const w=doc.internal.pageSize.getWidth(),bw=(w-72-24)/3;
+  [['Quantitative',Math.round(a.quant)+'/100'],['Qualitative',a.rated?Math.round(a.qual)+'/100':'Pending'],['Roster Readiness',Math.round(a.ready)+'/100'+(a.rated?'':' *')]].forEach(([l,v],i)=>{
+    const bx=36+i*(bw+12),o=i===2;
+    doc.setFillColor(...(o?HILITE:ZEBRA));doc.setDrawColor(...(o?GOLD:[219,226,240]));doc.roundedRect(bx,92,bw,52,6,6,'FD');
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);doc.text(l.toUpperCase(),bx+bw/2,108,{align:'center'});
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.setTextColor(...(o?[107,78,0]:BLUE));doc.text(v,bx+bw/2,132,{align:'center'});
+  });
+  const C={theme:'grid',styles:{fontSize:8.5,cellPadding:4,lineColor:[219,226,240]},headStyles:{fillColor:BLUE,textColor:255},alternateRowStyles:{fillColor:ZEBRA}};
+  const nxt=()=>doc.lastAutoTable.finalY+16;
+  doc.autoTable({...C,startY:160,head:[['Mode','Matches','Avg composite','Score vs pool best']],body:KS.map(k=>[MODES[k],a.cnt[k],a.c[k]==null?'-':a.c[k].toFixed(1),a.c[k]==null?'-':Math.round(a.sc[k])+'/100'])});
+  const av=[['KD ratio',nfc(a.kd,2)],['KD diff',nfc(a.diff,1)],['APK',nfc(a.apk,2)],['IKR',nfc(a.ikr,2)],['Avg kills',nfc(a.kills,1)],['Avg impact',nfc(a.imp)],['Avg HP time',a.hpTime==null?'-':nfc(a.hpTime)+'s'],['OBJ efficiency',nfc(a.obj,2)]],rows=[];
+  for(let i=0;i<av.length;i+=2)rows.push([...av[i],...av[i+1]]);
+  doc.autoTable({...C,startY:nxt(),head:[[{content:'Averages',colSpan:4}]],body:rows,columnStyles:{1:{fontStyle:'bold'},3:{fontStyle:'bold'}}});
+  doc.autoTable({...C,startY:nxt(),styles:{...C.styles,fontSize:7.5,cellPadding:3},head:[[{content:'Match History',colSpan:8}],['Game','Mode','Rounds','Score','K/D/A','Impact','HP time','Composite']],
+    body:p.matches.map(m=>[m.matchNo||'-',MODES[m.mode],m.mode==='HP'?'-':m.dur,m.score,m.k+'/'+m.d+'/'+m.a,m.imp,m.mode==='HP'?m.time+'s':'-',dm(m).comp.toFixed(1)])});
+  doc.autoTable({...C,startY:nxt(),head:[['Coach evaluation','Rating','Comments']],columnStyles:{2:{cellWidth:260}},
+    body:QS.map(([k,l])=>[l,q[k]&&q[k].r?q[k].r+'/5':'Not rated',q[k]&&q[k].c?q[k].c:'-'])});
+  if(!a.rated){doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(90,100,125);doc.text('* Provisional score: coach ratings are still pending, so Readiness uses the quantitative score only.',36,nxt()-4)}
+  finishPdf(doc,'NU_CODM_'+p.name.replace(/[^\w-]+/g,'_')+'.pdf');
+}
+const bpc=document.createElement('button');bpc.className='btn2';bpc.textContent='📄 Export PDF';bpc.onclick=pdfC;
+const lbl=document.createElement('label');lbl.className='chip';lbl.style.margin='0';lbl.innerHTML='<input type="checkbox" id="cPdfNoTop"> Hide top-player markers';
+$('cExp').before(bpc,lbl);
 const PC=['#0b5cad','#FFC72C','#0d8a5e','#7c3fc4','#d6384a'];
 let cfR='ALL',cfT='ALL',cmp=new Set();const cm=document.createElement('div');cm.id='ccmp';document.body.appendChild(cm);
 function bars(title,sel,get,fmt,max){
